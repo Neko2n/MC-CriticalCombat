@@ -45,7 +45,8 @@ public abstract class RegistryProvider<T> {
      */
     public final <I extends T> Supplier<I> define(final String name, final Supplier<I> supplier) {
         if (frozen)
-            throw new IllegalStateException("RegistryProvider#define cannot be called after RegistryProvider#register has been called.");
+            throw new IllegalStateException(
+                    "RegistryProvider#define cannot be called after RegistryProvider#register has been called.");
         final ResourceLocation id = ResourceLocation.fromNamespaceAndPath(CriticalCombat.MOD_ID, name);
         final RegistryObject<T, I> entry = new RegistryObject<>(this, id, supplier);
         this.entries.add(entry);
@@ -83,7 +84,10 @@ public abstract class RegistryProvider<T> {
 
         @Override
         public I get() {
-            return Objects.requireNonNull(this.registered, "Attempted get() on RegistryObject with ID \"" + this.id + "\" that is not yet registered").get();
+            return Objects
+                    .requireNonNull(this.registered,
+                            "Attempted get() on RegistryObject with ID \"" + this.id + "\" that is not yet registered")
+                    .get();
         }
     }
 }
