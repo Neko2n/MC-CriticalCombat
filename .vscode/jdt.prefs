@@ -1,0 +1,11 @@
+# Eclipse JDT compiler options for the VS Code Java language server.
+# Loaded via "java.settings.url" in critical_combat.code-workspace.
+
+# Don't warn when unannotated library values flow into @Nonnull
+org.eclipse.jdt.core.compiler.problem.nullUncheckedConversion=ignore
+# Trust "if (field != null) field.foo()" checks on @Nullable fields
+org.eclipse.jdt.core.compiler.problem.syntacticNullAnalysisForFields=enabled
+# Keep the warnings you DO want
+org.eclipse.jdt.core.compiler.problem.nullReference=warning
+org.eclipse.jdt.core.compiler.problem.potentialNullReference=warning
+org.eclipse.jdt.core.compiler.problem.nullSpecViolation=error
