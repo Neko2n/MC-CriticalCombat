@@ -29,12 +29,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MaceItem;
+import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TridentItem;
 
@@ -70,26 +69,19 @@ public final class WeaponTypeDataManager extends SimplePreparableReloadListener<
         // POLEARM to weapons extending from SpearItem or TridentItem,
         // LIGHT to weapons extending from KnifeItem,
         // HEAVY to weapons extending from HammerItem or MaceItem,
-        // BLADE to weapons tagged as #c:swords,
-        // POLEARM to weapons tagged as #c:spears,
+        // POLEARM to weapons extending from ProjectileItem,
         // LIGHT to weapons with >= 2.0 attack speed,
         // HEAVY to weapons with <= 0.6 attack speed,
         // DEFAULT to all other items tagged as #c:weapon or extending from WeaponItem
-        
+
         if (item instanceof SwordItem)
             return WeaponType.BLADE;
         if (item instanceof TridentItem /* || item instanceof SpearItem */)
             return WeaponType.POLEARM;
         if (item instanceof MaceItem /* || item instanceof HammerItem */)
             return WeaponType.HEAVY;
-
-        final ItemStack stack = item.getDefaultInstance();
-        if (stack.is(ItemTags.SWORDS))
-            return WeaponType.BLADE;
-        // if (stack.is(SPEARS))
-        // return WeaponType.POLEARM;
-        // if (stack.is(MACES))
-        // return WeaponType.HEAVY;
+        if (item instanceof ProjectileItem)
+            return WeaponType.POLEARM;
 
         if (ItemUtils.getAttribute(Attributes.ATTACK_DAMAGE.value(), item) > 0) {
             final double attackSpeed = ItemUtils.getAttribute(Attributes.ATTACK_SPEED.value(), item);
@@ -137,6 +129,7 @@ public final class WeaponTypeDataManager extends SimplePreparableReloadListener<
     @Override
     protected void apply(final Map<Item, WeaponType> prepared, final ResourceManager manager,
             final ProfilerFiller profiler) {
+        // TODO config setting to disable default mappings
         final HashMap<Item, WeaponType> mappings = new HashMap<>(defaultMappings());
         mappings.putAll(prepared);
         WeaponTypes.setMappings(mappings);
