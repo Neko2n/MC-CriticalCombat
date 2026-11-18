@@ -1,4 +1,4 @@
-package dev.nekotune.critical_combat.shared.definition;
+package dev.nekotune.critical_combat.shared;
 
 import java.util.IdentityHashMap;
 import java.util.Locale;

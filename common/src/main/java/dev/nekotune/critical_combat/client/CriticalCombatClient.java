@@ -1,6 +1,6 @@
 package dev.nekotune.critical_combat.client;
 
-import dev.nekotune.critical_combat.shared.definition.WeaponTypes;
+import dev.nekotune.critical_combat.shared.WeaponTypes;
 
 public interface CriticalCombatClient {
 
