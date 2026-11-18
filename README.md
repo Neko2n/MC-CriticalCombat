@@ -38,4 +38,6 @@ Default polearms are the trident, a new "spear" item made from flint and two sti
 
 When tools are capable of critically hitting, the item in your hotbar will twinkle to give a hint and to give feedback. 
 
-All tool types are tag-driven. Simply assign an item to a weapon tag to make it a certain weapon type.
+When an item is not assigned to a weapon class, it cannot critically hit.
+
+When you're not holding anything out, your fists function as a light weapon.
