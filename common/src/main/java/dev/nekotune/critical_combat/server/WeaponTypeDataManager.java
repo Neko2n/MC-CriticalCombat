@@ -72,7 +72,7 @@ public final class WeaponTypeDataManager extends SimplePreparableReloadListener<
         // POLEARM to weapons extending from ProjectileItem,
         // LIGHT to weapons with >= 2.0 attack speed,
         // HEAVY to weapons with <= 0.6 attack speed,
-        // DEFAULT to all other items tagged as #c:weapon or extending from WeaponItem
+        // DEFAULT to all other items that deal increased damage
 
         if (item instanceof SwordItem)
             return WeaponType.BLADE;
