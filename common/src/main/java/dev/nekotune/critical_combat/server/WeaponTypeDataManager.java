@@ -19,6 +19,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import dev.nekotune.critical_combat.CCConfig;
 import dev.nekotune.critical_combat.CriticalCombat;
 import dev.nekotune.critical_combat.platform.Platform;
 import dev.nekotune.critical_combat.shared.ItemUtils;
@@ -54,6 +55,8 @@ public final class WeaponTypeDataManager extends SimplePreparableReloadListener<
             .fromNamespaceAndPath(CriticalCombat.MOD_ID, "weapon_overrides.json");
 
     private static Map<Item, WeaponType> defaultMappings() {
+        if (!CCConfig.PROCEDURAL_WEAPON_TYPES.get())
+            return Map.of();
         final HashMap<Item, WeaponType> mappings = new HashMap<>();
         for (final Item item : BuiltInRegistries.ITEM) {
             final @Nullable WeaponType type = defaultType(item);
@@ -115,7 +118,7 @@ public final class WeaponTypeDataManager extends SimplePreparableReloadListener<
                 final JsonElement json = JsonParser.parseReader(reader);
                 final WeaponTypesData data = WeaponTypesData.CODEC.parse(JsonOps.INSTANCE, json)
                         .getOrThrow(JsonParseException::new);
-                if (data.replace())
+                if (data.replace()) 
                     result.clear();
                 result.putAll(data.values());
             } catch (IOException | RuntimeException e) {
@@ -129,7 +132,6 @@ public final class WeaponTypeDataManager extends SimplePreparableReloadListener<
     @Override
     protected void apply(final Map<Item, WeaponType> prepared, final ResourceManager manager,
             final ProfilerFiller profiler) {
-        // TODO config setting to disable default mappings
         final HashMap<Item, WeaponType> mappings = new HashMap<>(defaultMappings());
         mappings.putAll(prepared);
         WeaponTypes.setMappings(mappings);
