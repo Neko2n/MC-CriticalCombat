@@ -49,6 +49,16 @@ public final class Platform {
         public abstract <T> RegistryProvider<T> openRegistry(final Supplier<Registry<T>> registry);
 
         /**
+         * @return Network interface for sending data between the client and the server
+         */
+        public abstract PlatformNetwork network();
+
+        /**
+         * @return Platform-dependent event hooks
+         */
+        public abstract PlatformEvents events();
+
+        /**
          * @return True if the mod with the given ID is loaded
          */
         public abstract boolean isModLoaded(final String modId);

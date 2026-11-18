@@ -29,4 +29,14 @@ public class PlatformHelper$Fabric implements Platform.IPlatformHelper {
     public <T> RegistryProvider<T> openRegistry(final Supplier<Registry<T>> registry) {
         return new RegistryProvider$Fabric<>(registry);
     }
+
+    @Override
+    public PlatformEvents events() {
+        return PlatformEvents$Fabric.get();
+    }
+
+    @Override
+    public PlatformNetwork network() {
+        return PlatformNetwork$Fabric.get();
+    }
 }

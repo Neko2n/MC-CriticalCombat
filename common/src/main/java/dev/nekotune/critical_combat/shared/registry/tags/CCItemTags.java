@@ -12,57 +12,16 @@ import net.minecraft.world.item.Item;
 public class CCItemTags {
 
     /**
-     * Item tags for weapon items.
+     * Items which have +50% innate armor piercing.
+     * Typically for pickaxes.
      */
-    public static interface Weapon {
+    public static final TagKey<Item> PIERCES_ARMOR = define("pierces_armor");
 
-        /**
-         * Weapons that behave as default vanilla weapons.
-         * Crits when falling.
-         */
-        public static final TagKey<Item> DEFAULT = define("weapon/default");
-
-        /**
-         * Weapons that require charging up to swing and mine, and do innate AoE damage.
-         * Crits when charged to 200%.
-         * Typically for hammer-like weapons.
-         */
-        public static final TagKey<Item> HEAVY = define("weapon/heavy");
-
-        /**
-         * Weapons that behave like 1.8, with no attack cooldown.
-         * Crits when up-close.
-         * Typically for knives.
-         */
-        public static final TagKey<Item> LIGHT = define("weapon/light");
-
-        /**
-         * Weapons that can parry projectiles with right-click, and do innate sweeping
-         * damage.
-         * Crits when the player's camera is moving fast.
-         * Typically for swords.
-         */
-        public static final TagKey<Item> BLADE = define("weapon/blade");
-
-        /**
-         * Weapons that can be thrown with right-click.
-         * Crits when the player is sprinting.
-         * Typically for spear-like weapons.
-         */
-        public static final TagKey<Item> POLEARM = define("weapon/polearm");
-
-        /**
-         * Weapons which have +50% innate armor piercing.
-         * Typically for pickaxes.
-         */
-        public static final TagKey<Item> PIERCES_ARMOR = define("weapon/pierces_armor");
-
-        /**
-         * Weapons which deal upwards knockback instead of forwards knockback.
-         * Typically for shovels.
-         */
-        public static final TagKey<Item> UPWARDS_KNOCKBACK = define("weapon/upwards_knockback");
-    }
+    /**
+     * Items which deal upwards knockback instead of forwards knockback.
+     * Typically for shovels.
+     */
+    public static final TagKey<Item> UPWARDS_KNOCKBACK = define("upwards_knockback");
 
     private static final TagKey<Item> define(final String name) {
         return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(CriticalCombat.MOD_ID, name));

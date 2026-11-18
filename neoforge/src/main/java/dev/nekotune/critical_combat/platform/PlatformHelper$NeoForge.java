@@ -36,4 +36,14 @@ public final class PlatformHelper$NeoForge implements Platform.IPlatformHelper {
         final IEventBus modBus = Objects.requireNonNull(container.getEventBus());
         return new RegistryProvider$NeoForge<>(registry, modBus);
     }
+
+    @Override
+    public PlatformEvents events() {
+        return PlatformEvents$NeoForge.get();
+    }
+
+    @Override
+    public PlatformNetwork network() {
+        return PlatformNetwork$NeoForge.get();
+    }
 }
