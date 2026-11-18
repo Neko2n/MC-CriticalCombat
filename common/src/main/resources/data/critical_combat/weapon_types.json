@@ -1,9 +1,0 @@
-{
-    "replace": false,
-    "values": {
-        "minecraft:wooden_sword": "BLADE",
-        "minecraft:stone_sword": "BLADE",
-        "minecraft:iron_sword": "BLADE",
-        "minecraft:golden_sword": "BLADE"
-    }
-}
