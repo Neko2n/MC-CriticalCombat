@@ -42,14 +42,129 @@ When an item is not assigned to a weapon class, it cannot critically hit.
 
 ## DEV
 
-Task 1 - Light Weapons
+### Feature 1 - Crit Criteria
 
-Bring 1.8 combat to knives from Farmer's Delight.
+_Assign weapons "types" that each follow unique crit criteria._
 
-Attack indicator, for now, is hidden.
+Tasks
+- ~~LIGHT-type weapons crit when up-close~~
+- HEAVY-type weapons crit when their charge is 200%
+- ~~BLADE-type weapons crit when the camera/player is moving fast~~
+- ~~POLEARM-type weapons crit while sprinting~~
+- ~~DEFAULT-type weapons follow vanilla crit logic~~
 
-Deals reduced knockback from afar, but regular knockback up close.
+### Feature 2 - Light Weapons 1.8 Combat
 
-Crits when up close.
+_Bring 1.8 combat to knives from Farmer's Delight._
 
-Attack speed attribute is now used for bypassing immunity ticks for damage. 2.0 speed bypasses 10/20 immunity ticks, and 4.0 bypasses 20/20 immunity ticks.
+Tasks
+- Deals reduced knockback when not critting.
+- Attack speed attribute is now used for bypassing immunity ticks for damage. 2.0 speed bypasses 10/20 immunity ticks, and 4.0 bypasses 20/20 immunity ticks.
+- "Heat" that drains with each hit that successfully does damage, reducing your damage as your heat gets lower to a minimum of 50%. Persists even if you swap away from the item (heat is bound to the player through CCPlayerExtension)
+- Render your item's heat as an opaque orange outline around your attack indicator icon that shifts to transparent yellow as it weakens, and hides entirely at full heat.
+- Attack indicator flashes to gray and fades back in to white quickly each swing to give feedback
+- Spawns a tiny slash particle and plays a very light/faint slash sound each swing
+- Alternate the slash direction of the slash particles if you're swinging in rapid succession
+
+### Feature 3 - Throwing Polearms
+
+_Separate throwing functionality from the Trident, granting it to all POLEARM-type weapons_
+
+Tasks
+- Add a new "spear" item to the game, crafted from two sticks and 1 flint
+- Separate the trident's throwing capability into a CCItemExtension wired through a mixin into the base Item class
+- Grant throwing capability to all POLEARM-type weapons, including the spear
+- Unique "stab" attack particle for polearms
+- Compatibility with Spear Fishing that grants spear fishing functionality automatically to all POLEARM-type weapons (configurable)
+
+### Feature 4 - Two-handed Items
+
+_Make certain items require two hands to hold, disabling your offhand._
+
+Tasks
+- Refactor the WeaponType enum into its own file
+- Change the WeaponTypes class which handles WeaponType mappings into a new ItemWeaponData class, which also contains a static helper method for detecting when an item is two-handed
+- Procedurally grant two-handed status to items below a config-driven attack speed
+- Manually grant two-handed status to items defined in a two_handed tag
+- Define the spear and the mace in the default two_handed tag file
+- Disable the ability to use your offhand slot while holding a two-handed item in your mainhand slot
+- Disable two-handed items from being able to be placed in the offhand slot, manually or through the F keybind
+- Render the offhand slot and its item in your HUD as slightly greyed-out and transparent
+- Quiver the offhand slot in your HUD slightly when attempting to put a two-handed item into it with the F keybind (only while it's visible)
+
+### Feature 5 - Blade Weapons
+
+_Give BLADE-type items innate sweeping edge on every swing, and add functionality for parrying with them as substitutes for shields._
+
+Tasks
+- Give blade-type weapons unique interact functionality, wired through CCItemExtension, where they block attacks in a 0.5s (configurable) window.
+- Unique first-person animation for blocking that resembles 1.8 blocking. The sword falls down a bit after the block window closes.
+- Show the shield block icon when your parry window is active, and show a smaller gray shield icon after your parry window closes.
+- Make all swings with blade-type weapons activate sweeping edge, whether you landed a hit or not
+- Alternate the slash direction of the sweeping edge particles if you're swinging in rapid succession
+
+### Feature 6 - Heavy Weapons
+
+_Add a HEAVY classification for items that changes their attack/destroy functionality to be based on charging up and releasing._
+
+Tasks
+- When an item is marked as HEAVY, delay attack/destroy to mouseRelease
+- Make mouseDown begin charging, and stop charging on mouseRelease
+- Charge goes from 0% to 100% in the same time it would take for the item's attack cooldown to refill from empty
+- Scale attack knockback with charge level, mapping to charge level identically to how it maps to attack cooldown for regular items.
+- Charging goes over a "hump" at 50%, pausing for a moment and then continuing
+- Being over 60% charge makes attacks spawn a vertical AoE, just like sweeping edge but without slash particles. The AoE gets wider horizontally as your charge increases.
+- Swinging plays a deep, low-pitched swoosh noise that's louder and lower-pitched the more you charged up and combines with another "juicier" sound above 60% charge
+- Restrict critting with heavy weapons to require 90% charge
+- Landing a crit with a heavy weapon plays a subtle "crunch" sound on top of the regular crit sound
+- Knockback is doubled when you crit
+- Swinging above 60% charge spawns an "arc" particle that follows the intended arc of your swing. Swinging above the crit threshold uses a chunkier, more intense arc particle.
+
+### Feature 7 - Heavy Mining
+
+_Make HEAVY-type items mine blocks when you smack them, leaving lasting cracks that you can build upon to break large areas over the course of multiple swings._
+
+Tasks [WIP]
+- Damage dealt to blocks with HEAVY-type items persists for longer and slowly wears off instead of immediately disappearing
+
+### Feature 8 - Animations
+
+_Give weapons unique animations in the first and third person based on their class and two-handedness._
+
+Tasks
+- Unique first-person animation for holding two-handed items
+- Unique first-person animation for swinging two-handed items
+- Unique third-person animation for holding two-handed items
+- Unique third-person animation for swinging two-handed items
+- Unique third-person animation for blocking with BLADE-type items
+- Unique third-person animation for blocking with two-handed BLADE-type items
+- Unique first-person animation for charging HEAVY-type items
+- Unique first-person animation for swinging HEAVY-type items
+- Unique third-person animation for charging HEAVY-type items
+- Unique third-person animation for swinging HEAVY-type items
+- Unique first-person animation for charging two-handed HEAVY-type items
+- Unique first-person animation for swinging two-handed HEAVY-type items
+- Unique third-person animation for charging two-handed HEAVY-type items
+- Unique third-person animation for swinging two-handed HEAVY-type items
+- Unique first-person animation for swinging LIGHT-type items (slashes instead of smacking downward, and alternates directions if done in rapid succession)
+- Unique third-person animation for swinging LIGHT-type items (slashes instead of smacking downward, and alternates directions if done in rapid succession)
+- Unique first-person animation for holding BLADE-type items (tilted sideways)
+- Unique first-person animation for swinging BLADE-type items (slashes instead of smacking downward, and alternates directions if done in rapid succession)
+- Unique third-person animation for swinging BLADE-type items (slashes instead of smacking downward, and alternates directions if done in rapid succession)
+- Unique first-person animation for swinging POLEARM-type items (stabs forward)
+- Unique third-person animation for swinging POLEARM-type items (stabs forward)
+- Unique first-person animation for swinging two-handed POLEARM-type items (stabs forward)
+- Unique third-person animation for swinging two-handed POLEARM-type items (stabs forward)
+- Ensure compatibility with EMF/ETF
+- Ensure compatibility with Sodium
+- Ensure compatibility with Veil
+- Ensure compatibility with PlayerAnimator
+- Ensure compatibility with the FirstPersonAnimations mod
+- Ensure compatibility with Create Aeronautics (Flywheel)
+- Document Hold My Items (HMI) as incompatible in the README
+- Client config toggle for custom two-handed animations
+- Client config toggles for custom weapon type animations
+
+### Polish
+
+- Add arrows to the deflectable_projectiles entity tag
