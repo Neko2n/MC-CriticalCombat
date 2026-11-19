@@ -22,21 +22,28 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.nekotune.critical_combat.CCConfig;
 import dev.nekotune.critical_combat.CriticalCombat;
 import dev.nekotune.critical_combat.platform.Platform;
-import dev.nekotune.critical_combat.shared.ItemUtils;
 import dev.nekotune.critical_combat.shared.WeaponTypes;
 import dev.nekotune.critical_combat.shared.WeaponTypes.WeaponType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.MaceItem;
+import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.ProjectileItem;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TridentItem;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 
 /**
  * Manages loading weapon types mappings data for {@link CriticalCombat}
@@ -77,6 +84,7 @@ public final class WeaponTypeDataManager extends SimplePreparableReloadListener<
         // HEAVY to weapons with <= 0.6 attack speed,
         // DEFAULT to all other items that deal increased damage
 
+        // Class-based mappings
         if (item instanceof SwordItem)
             return WeaponType.BLADE;
         if (item instanceof TridentItem /* || item instanceof SpearItem */)
@@ -85,15 +93,34 @@ public final class WeaponTypeDataManager extends SimplePreparableReloadListener<
             return WeaponType.HEAVY;
         if (item instanceof ProjectileItem)
             return WeaponType.POLEARM;
+        if (item instanceof HoeItem
+                || item instanceof AxeItem
+                || item instanceof ShovelItem
+                || item instanceof PickaxeItem)
+            return WeaponType.DEFAULT;
 
-        if (ItemUtils.getAttribute(Attributes.ATTACK_DAMAGE.value(), item) > 0) {
-            final double attackSpeed = ItemUtils.getAttribute(Attributes.ATTACK_SPEED.value(), item);
-            if (attackSpeed >= 2.0f)
+        // Attribute-based mappings
+        boolean isWeapon = false;
+        final AttributeInstance attackSpeed = new AttributeInstance(Attributes.ATTACK_SPEED, $ -> {});
+        final ItemAttributeModifiers modifiers = item.components()
+                .getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+        for (final ItemAttributeModifiers.Entry entry : modifiers.modifiers()) {
+            if (entry.slot() != EquipmentSlotGroup.MAINHAND)
+                continue;
+            if (entry.attribute().value() == Attributes.ATTACK_DAMAGE.value()) {
+                isWeapon = true;
+            } else if (entry.attribute().value() == attackSpeed.getAttribute().value()) {
+                attackSpeed.addOrUpdateTransientModifier(entry.modifier());
+            }
+        }
+        if (isWeapon) {
+            if (attackSpeed.getValue() >= 2.0f)
                 return WeaponType.LIGHT;
-            if (attackSpeed <= 0.6f)
+            if (attackSpeed.getValue() <= 0.6f)
                 return WeaponType.HEAVY;
             return WeaponType.DEFAULT;
         }
+
         return null;
     }
 
@@ -118,7 +145,7 @@ public final class WeaponTypeDataManager extends SimplePreparableReloadListener<
                 final JsonElement json = JsonParser.parseReader(reader);
                 final WeaponTypesData data = WeaponTypesData.CODEC.parse(JsonOps.INSTANCE, json)
                         .getOrThrow(JsonParseException::new);
-                if (data.replace()) 
+                if (data.replace())
                     result.clear();
                 result.putAll(data.values());
             } catch (IOException | RuntimeException e) {
