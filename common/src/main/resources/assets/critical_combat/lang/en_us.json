@@ -10,5 +10,8 @@
     "config.critical_combat.two_handed_speed.tooltip": "All weapons at or below this attack speed are procedurally assigned to be two-handed. Set to 0 if you'd prefer for only manually tagged items to be two-handed. Set to 4 if you want all items to be two-handed.",
 
     "config.critical_combat.blade_crit_speed": "Blade Crit Camera Speed",
-    "config.critical_combat.blade_crit_speed.tooltip": "The average amount the player's camera has to move per tick, in degrees, for a BLADE-type weapon (swords) to critically hit."
+    "config.critical_combat.blade_crit_speed.tooltip": "The average amount the player's camera has to move per tick, in degrees, for a BLADE-type weapon (swords) to critically hit.",
+
+    "config.critical_combat.light_remove_attack_cooldown": "Light Weapons Remove Attack Cooldown",
+    "config.critical_combat.light_remove_attack_cooldown.tooltip": "Whether LIGHT-type weapons (knives, etc.) should have their attack cooldown removed, using a combat system closer to pre-1.9 Minecraft."
 }

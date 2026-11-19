@@ -16,6 +16,9 @@ public class CCConfig {
     /** The camera/movement speed required for a BLADE-type weapon to critically hit. */
     public static final ModConfigSpec.ConfigValue<Double> BLADE_CRIT_SPEED;
 
+    /** Whether LIGHT-type weapons should use 1.8-inspired combat. (no attack cooldown) */
+    public static final ModConfigSpec.BooleanValue LIGHT_REMOVE_ATTACK_COOLDOWN;
+
     static {
         final ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
@@ -30,6 +33,10 @@ public class CCConfig {
         BLADE_CRIT_SPEED = builder
                 .translation("config.critical_combat.blade_crit_speed")
                 .defineInRange("blade_crit_speed", 10D, 0D, Double.MAX_VALUE);
+
+        LIGHT_REMOVE_ATTACK_COOLDOWN = builder
+                .translation("config.critical_combat.light_remove_attack_cooldown")
+                .define("light_remove_attack_cooldown", true);
 
         SPEC = builder.build();
     }

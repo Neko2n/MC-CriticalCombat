@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import dev.nekotune.critical_combat.CCConfig;
 import dev.nekotune.critical_combat.shared.CCPlayerExtension;
 import dev.nekotune.critical_combat.shared.WeaponTypes;
 import dev.nekotune.critical_combat.shared.WeaponTypes.WeaponType;
@@ -35,7 +36,8 @@ public class PlayerMixin implements CCPlayerExtension.MixinHolder {
     @Inject(method = "getCurrentItemAttackStrengthDelay", at = @At("HEAD"), cancellable = true)
     public void critical_combat$removeAttackCDForLightWeapons(final CallbackInfoReturnable<Float> ci) {
         final Player player = (Player) (Object) this;
-        if (player.isHolding(stack -> WeaponTypes.get(stack.getItem()) == WeaponType.LIGHT)) {
+        if (player.isHolding(stack -> WeaponTypes.get(stack.getItem()) == WeaponType.LIGHT)
+                && CCConfig.LIGHT_REMOVE_ATTACK_COOLDOWN.get()) {
             ci.setReturnValue(Float.MIN_NORMAL);
         }
     }
