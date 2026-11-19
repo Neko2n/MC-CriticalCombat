@@ -40,4 +40,16 @@ When tools are capable of critically hitting, the item in your hotbar will twink
 
 When an item is not assigned to a weapon class, it cannot critically hit.
 
-When you're not holding anything out, your fists function as a light weapon.
+## DEV
+
+Task 1 - Light Weapons
+
+Bring 1.8 combat to knives from Farmer's Delight.
+
+Attack indicator, for now, is hidden.
+
+Deals reduced knockback from afar, but regular knockback up close.
+
+Crits when up close.
+
+Attack speed attribute is now used for bypassing immunity ticks for damage. 2.0 speed bypasses 10/20 immunity ticks, and 4.0 bypasses 20/20 immunity ticks.
