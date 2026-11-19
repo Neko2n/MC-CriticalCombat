@@ -1,0 +1,14 @@
+{
+    "critical_combat.configuration.title": "Critical Combat Configuration",
+    "critical_combat.configuration.section.critical.combat.common.toml": "Common Settings",
+    "critical_combat.configuration.section.critical.combat.common.toml.title": "Critical Combat Common Settings",
+
+    "config.critical_combat.procedural_weapon_types": "Procedural Weapon Types",
+    "config.critical_combat.procedural_weapon_types.tooltip": "Whether items should be procedurally given weapon types. Set to false to only assign weapon types manually through datapacks.",
+
+    "config.critical_combat.two_handed_speed": "Two-Handed Attack Speed",
+    "config.critical_combat.two_handed_speed.tooltip": "All weapons at or below this attack speed are procedurally assigned to be two-handed. Set to 0 if you'd prefer for only manually tagged items to be two-handed. Set to 4 if you want all items to be two-handed.",
+
+    "config.critical_combat.blade_crit_speed": "Blade Crit Camera Speed",
+    "config.critical_combat.blade_crit_speed.tooltip": "The average amount the player's camera has to move per tick, in degrees, for a BLADE-type weapon (swords) to critically hit."
+}
