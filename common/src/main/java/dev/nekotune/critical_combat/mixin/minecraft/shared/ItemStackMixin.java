@@ -10,6 +10,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import dev.nekotune.critical_combat.CCConfig;
 import dev.nekotune.critical_combat.shared.CCPlayerExtension;
+import dev.nekotune.critical_combat.shared.WeaponTypes;
+import dev.nekotune.critical_combat.shared.WeaponTypes.WeaponType;
 import net.minecraft.SharedConstants;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -57,7 +59,11 @@ public abstract class ItemStackMixin {
                 final double attackSpeed = attacker.getAttributeValue(Attributes.ATTACK_SPEED);
                 double cooldownSecs = baseCooldownSecs / 2D;
                 cooldownSecs = Math.min(baseCooldownSecs, cooldownSecs * attackSpeed);
-                final int cooldownTicks = (int) Math.round(SharedConstants.TICKS_PER_SECOND * cooldownSecs);
+                int cooldownTicks = (int) Math.round(SharedConstants.TICKS_PER_SECOND * cooldownSecs);
+                final @Nullable WeaponType weaponType = WeaponTypes.get(stack.getItem());
+                if (weaponType != WeaponType.LIGHT) {
+                    cooldownTicks /= 2;
+                }
                 ext.setCombatWearCooldown(cooldownTicks);
             } else {
                 ci.cancel();
