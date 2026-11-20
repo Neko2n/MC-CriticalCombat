@@ -24,6 +24,7 @@ import dev.nekotune.critical_combat.CriticalCombat;
 import dev.nekotune.critical_combat.platform.Platform;
 import dev.nekotune.critical_combat.shared.WeaponTypes;
 import dev.nekotune.critical_combat.shared.WeaponTypes.WeaponType;
+import dev.nekotune.critical_combat.shared.definition.DaggerItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -91,6 +92,8 @@ public final class WeaponTypeDataManager extends SimplePreparableReloadListener<
             return WeaponType.POLEARM;
         if (item instanceof MaceItem /* || item instanceof HammerItem */)
             return WeaponType.HEAVY;
+        if (item instanceof DaggerItem)
+            return WeaponType.LIGHT;
         if (item instanceof ProjectileItem)
             return WeaponType.POLEARM;
         if (item instanceof HoeItem

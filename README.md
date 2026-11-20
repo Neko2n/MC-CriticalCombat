@@ -73,7 +73,8 @@ _Add a unique LIGHT-type weapon to the base game._
 
 Tasks
 - Add a "Black Shard" item, found rarely in nether fortress chests
-- Add a "Dagger" item, crafted from putting a Black Shard on top of a Blaze Rod
+~~- Add a "Dagger" item, crafted from putting a Black Shard on top of a Blaze Rod~~
+~~- Create datagen system for item models, tags, recipes, etc.~~
 - Add a "Detonation" enchantment for the Dagger, which makes your attacks explode and deal 10x knockback at >= 0.9 heat (resets your heat to 0 on proc)
 - Add a "Richochet" enchantment for the Dagger, which makes the knife projectile bounce between nearby enemies before bouncing back in your direction
 - Give the Dagger compatibility with loyalty, sharpness, unbreaking, smite, bane of arthropods, and fire aspect
