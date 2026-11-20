@@ -8,7 +8,8 @@
     "shared.PlayerMixin",
     "shared.LivingEntityMixin",
     "shared.MeleeAttackGoalMixin",
-    "shared.ItemStackMixin"
+    "shared.ItemStackMixin",
+    "shared.DiggerItemMixin"
   ],
   "client": [
     "client.GuiAccessor",

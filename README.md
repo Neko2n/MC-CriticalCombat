@@ -170,3 +170,4 @@ Tasks
 ### Polish
 
 - Add arrows to the deflectable_projectiles entity tag
+- ~~Remove the extra durability loss from attacking with digging tools~~
