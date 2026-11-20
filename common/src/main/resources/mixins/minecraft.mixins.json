@@ -7,7 +7,8 @@
   "mixins": [
     "shared.PlayerMixin",
     "shared.LivingEntityMixin",
-    "shared.MeleeAttackGoalMixin"
+    "shared.MeleeAttackGoalMixin",
+    "shared.ItemStackMixin"
   ],
   "client": [
     "client.GuiAccessor",

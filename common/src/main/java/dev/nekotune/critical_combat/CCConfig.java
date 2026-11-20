@@ -31,6 +31,9 @@ public class CCConfig {
     /** Whether heat should reset when you take damage. */
     public static final ModConfigSpec.BooleanValue HEAT_RESETS_ON_HURT;
 
+    /** The number of seconds after attacking that durability loss from attacks should be disabled. */
+    public static final ModConfigSpec.ConfigValue<Double> COMBAT_WEAR_COOLDOWN;
+
     static {
         final ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
@@ -52,7 +55,7 @@ public class CCConfig {
 
         HEAT_PER_HIT = builder
                 .translation("config.critical_combat.heat_per_hit")
-                .defineInRange("heat_per_hit", 0.1D, 0D, 1D);
+                .defineInRange("heat_per_hit", 0.2D, 0D, 1D);
 
         HEAT_DRAIN = builder
                 .translation("config.critical_combat.heat_drain")
@@ -65,6 +68,10 @@ public class CCConfig {
         HEAT_RESETS_ON_HURT = builder
                 .translation("config.critical_combat.heat_resets_on_hurt")
                 .define("heat_resets_on_hurt", true);
+
+        COMBAT_WEAR_COOLDOWN = builder
+                .translation("config.critical_combat.combat_wear_cooldown")
+                .defineInRange("combat_wear_cooldown", 0.5D, 0D, Float.MAX_VALUE);
 
         SPEC = builder.build();
     }

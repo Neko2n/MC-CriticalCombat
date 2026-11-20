@@ -25,5 +25,8 @@
     "config.critical_combat.heat_damage_scale.tooltip": "The minimum % of damage dealt with a hit from a LIGHT-type weapon depending on your heat level. At 0.5, light weapons will do 50% damage at 0% heat, scaling up to 100% damage at 100% heat.",
 
     "config.critical_combat.heat_resets_on_hurt": "Heat Resets After Taking Damage",
-    "config.critical_combat.heat_resets_on_hurt.tooltip": "Should heat (% of total damage dealt with LIGHT-type weapons) reset when you take damage."
+    "config.critical_combat.heat_resets_on_hurt.tooltip": "Should heat (% of total damage dealt with LIGHT-type weapons) reset when you take damage.",
+
+    "config.critical_combat.combat_wear_cooldown": "Durability Loss Cooldown",
+    "config.critical_combat.combat_wear_cooldown.tooltip": "The number of seconds after attacking for which durability loss from attacks should be disabled. Helps keep LIGHT-type weapons from melting apart."
 }

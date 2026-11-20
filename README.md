@@ -66,6 +66,7 @@ Tasks
 - Attack indicator flashes to gray and fades back in to white quickly each swing to give feedback
 - Spawns a tiny slash particle and plays a very light/faint slash sound each swing
 - Alternate the slash direction of the slash particles if you're swinging in rapid succession
+- ~~Cooldown for LIGHT-type weapons to lose durability from attacking~~
 
 ### Feature 3 - Throwing Polearms
 

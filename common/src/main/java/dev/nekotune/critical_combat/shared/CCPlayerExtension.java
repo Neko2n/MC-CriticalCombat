@@ -42,6 +42,7 @@ public final class CCPlayerExtension {
     public final Player player;
     public final CameraTracker cameraTracker;
     private float attackHeat = 0f;
+    private int combatWearCooldownTicks = 0;
 
     public CCPlayerExtension(final Player player) {
         this.player = player;
@@ -57,6 +58,8 @@ public final class CCPlayerExtension {
         // Drain attack heat passively over time
         final float heatLoss = CCConfig.HEAT_DRAIN.get().floatValue() / SharedConstants.TICKS_PER_SECOND;
         this.attackHeat = Math.clamp(this.attackHeat - heatLoss, 0f, 1f);
+
+        this.combatWearCooldownTicks = Math.max(this.combatWearCooldownTicks - 1, 0);
 
         // TODO remove debug
         final @Nullable WeaponType heldWeaponType = WeaponTypes.get(this.player.getWeaponItem().getItem());
@@ -102,6 +105,24 @@ public final class CCPlayerExtension {
      */
     public float getHeat() {
         return this.attackHeat;
+    }
+
+    /**
+     * Starts a cooldown preventing the player's items from losing durability
+     * when attacking enemies.
+     * 
+     * @param cooldownTicks Number of ticks to prevent durability damage for
+     */
+    public void setCombatWearCooldown(final int cooldownTicks) {
+        this.combatWearCooldownTicks = cooldownTicks;
+    }
+
+    /**
+     * @return True if items should be able to take durability damage from attacking
+     *         enemies (if {@link CCPlayerExtension#combatWearCooldownTicks} == 0)
+     */
+    public boolean shouldApplyCombatWear() {
+        return this.combatWearCooldownTicks == 0;
     }
 
     /**
