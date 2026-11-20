@@ -42,7 +42,7 @@ public class DaggerItem extends Item implements ProjectileItem {
 				Tool.Rule.overrideSpeed(BlockTags.SWORD_EFFICIENT, 1.5F)), 1.0F, 2);
 	}
 
-	public static ItemAttributeModifiers createAttributes(final int attackDamage, final float attackSpeed) {
+	public static ItemAttributeModifiers createAttributes(final float attackDamage, final float attackSpeed) {
 		return ItemAttributeModifiers.builder()
 				.add(
 						Attributes.ATTACK_DAMAGE,

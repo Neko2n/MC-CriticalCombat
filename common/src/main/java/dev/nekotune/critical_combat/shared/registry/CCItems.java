@@ -29,7 +29,7 @@ public final class CCItems {
                 () -> new Item(blackShardProperties));
         DAGGER = ITEMS.define("dagger",
                 () -> new DaggerItem(blackShardProperties.attributes(DaggerItem
-                        .createAttributes(4, -1.8F))));
+                        .createAttributes(2.5f, -1.8f))));
     }
 
     private CCItems() {
