@@ -5,7 +5,9 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "shared.PlayerMixin"
+    "shared.PlayerMixin",
+    "shared.LivingEntityMixin",
+    "shared.MeleeAttackGoalMixin"
   ],
   "client": [],
   "server": [],

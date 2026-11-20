@@ -14,31 +14,43 @@ import dev.nekotune.critical_combat.CCConfig;
 import dev.nekotune.critical_combat.shared.CCPlayerExtension;
 import dev.nekotune.critical_combat.shared.WeaponTypes;
 import dev.nekotune.critical_combat.shared.WeaponTypes.WeaponType;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
 @Mixin(value = Player.class)
-public class PlayerMixin implements CCPlayerExtension.MixinHolder {
+public abstract class PlayerMixin implements CCPlayerExtension.MixinHolder {
 
     @Unique
-    private final CCPlayerExtension critical_combat$playerExtension = new CCPlayerExtension((Player)(Object)this);
+    private final CCPlayerExtension critical_combat$playerExtension = new CCPlayerExtension((Player) (Object) this);
 
     @Override
     public CCPlayerExtension critical_combat$getPlayerExtension() {
         return this.critical_combat$playerExtension;
     }
 
-    @Inject(method = "tick", at = @At("TAIL"))
+    @Inject(method = "tick", at = @At("TAIL"), cancellable = true)
     private void critical_combat$tickPlayerExtension(final CallbackInfo ci) {
-        this.critical_combat$playerExtension.tick();
+        this.critical_combat$playerExtension.tick(ci);
+    }
+
+    @Inject(method = "attack", at = @At("TAIL"), cancellable = true)
+    public void critical_combat$hookAttack(final Entity target, final CallbackInfo ci) {
+        this.critical_combat$playerExtension.attack(target, ci);
+    }
+
+    @Inject(method = "hurt", at = @At("RETURN"), cancellable = true)
+    private void critical_combat$hookHurt(final DamageSource source, final float amount,
+            final CallbackInfoReturnable<Boolean> cir) {
+        this.critical_combat$playerExtension.hurt(source, amount, cir);
     }
 
     @Inject(method = "getCurrentItemAttackStrengthDelay", at = @At("HEAD"), cancellable = true)
-    public void critical_combat$removeAttackCDForLightWeapons(final CallbackInfoReturnable<Float> ci) {
+    public void critical_combat$removeAttackCDForLightWeapons(final CallbackInfoReturnable<Float> cir) {
         final Player player = (Player) (Object) this;
         if (player.isHolding(stack -> WeaponTypes.get(stack.getItem()) == WeaponType.LIGHT)
                 && CCConfig.LIGHT_REMOVE_ATTACK_COOLDOWN.get()) {
-            ci.setReturnValue(Float.MIN_NORMAL);
+            cir.setReturnValue(Float.MIN_NORMAL);
         }
     }
 

@@ -13,5 +13,17 @@
     "config.critical_combat.blade_crit_speed.tooltip": "The average amount the player's camera has to move per tick, in degrees, for a BLADE-type weapon (swords) to critically hit.",
 
     "config.critical_combat.light_remove_attack_cooldown": "Light Weapons Remove Attack Cooldown",
-    "config.critical_combat.light_remove_attack_cooldown.tooltip": "Whether LIGHT-type weapons (knives, etc.) should have their attack cooldown removed, using a combat system closer to pre-1.9 Minecraft."
+    "config.critical_combat.light_remove_attack_cooldown.tooltip": "Whether LIGHT-type weapons (knives, etc.) should have their attack cooldown removed, using a combat system closer to pre-1.9 Minecraft.",
+
+    "config.critical_combat.heat_per_hit": "Heat Gained Per Hit",
+    "config.critical_combat.heat_per_hit.tooltip": "The amount of heat (% of total damage dealt with LIGHT-type weapons) that is gained with each successful hit from a LIGHT-type weapon. Set to 0 to disable the heat system.",
+
+    "config.critical_combat.heat_drain": "Heat Loss Per Second",
+    "config.critical_combat.heat_drain.tooltip": "The amount of heat (% of total damage dealt with LIGHT-type weapons) that is lost passively each second.",
+
+    "config.critical_combat.heat_damage_scale": "Heat Damage Reduction",
+    "config.critical_combat.heat_damage_scale.tooltip": "The minimum % of damage dealt with a hit from a LIGHT-type weapon depending on your heat level. At 0.5, light weapons will do 50% damage at 0% heat, scaling up to 100% damage at 100% heat.",
+
+    "config.critical_combat.heat_resets_on_hurt": "Heat Resets After Taking Damage",
+    "config.critical_combat.heat_resets_on_hurt.tooltip": "Should heat (% of total damage dealt with LIGHT-type weapons) reset when you take damage."
 }

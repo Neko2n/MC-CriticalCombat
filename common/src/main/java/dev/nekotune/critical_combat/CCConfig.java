@@ -19,6 +19,18 @@ public class CCConfig {
     /** Whether LIGHT-type weapons should use 1.8-inspired combat. (no attack cooldown) */
     public static final ModConfigSpec.BooleanValue LIGHT_REMOVE_ATTACK_COOLDOWN;
 
+    /** The amount of "heat" you gain with each successful hit (damage % for LIGHT weapons) */
+    public static final ModConfigSpec.ConfigValue<Double> HEAT_PER_HIT;
+
+    /** The rate per second at which your "heat" drains (damage % for LIGHT weapons) */
+    public static final ModConfigSpec.ConfigValue<Double> HEAT_DRAIN;
+
+    /** The % of damage LIGHT-type weapons deal when at 0 heat. */
+    public static final ModConfigSpec.ConfigValue<Double> HEAT_DAMAGE_SCALE;
+
+    /** Whether heat should reset when you take damage. */
+    public static final ModConfigSpec.BooleanValue HEAT_RESETS_ON_HURT;
+
     static {
         final ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
@@ -37,6 +49,22 @@ public class CCConfig {
         LIGHT_REMOVE_ATTACK_COOLDOWN = builder
                 .translation("config.critical_combat.light_remove_attack_cooldown")
                 .define("light_remove_attack_cooldown", true);
+
+        HEAT_PER_HIT = builder
+                .translation("config.critical_combat.heat_per_hit")
+                .defineInRange("heat_per_hit", 0.1D, 0D, 1D);
+
+        HEAT_DRAIN = builder
+                .translation("config.critical_combat.heat_drain")
+                .define("heat_drain", 0.5D);
+
+        HEAT_DAMAGE_SCALE = builder
+                .translation("config.critical_combat.heat_damage_scale")
+                .defineInRange("heat_damage_scale", 0.5D, 0D, 1D);
+
+        HEAT_RESETS_ON_HURT = builder
+                .translation("config.critical_combat.heat_resets_on_hurt")
+                .define("heat_resets_on_hurt", true);
 
         SPEC = builder.build();
     }
