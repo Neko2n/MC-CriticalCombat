@@ -9,7 +9,10 @@
     "shared.LivingEntityMixin",
     "shared.MeleeAttackGoalMixin"
   ],
-  "client": [],
+  "client": [
+    "client.GuiAccessor",
+    "client.GuiMixin"
+  ],
   "server": [],
   "injectors": {
     "defaultRequire": 1
