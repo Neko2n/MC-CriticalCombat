@@ -78,8 +78,8 @@ public final class CCPlayerExtension {
                 final @Nullable WeaponType heldWeaponType = WeaponTypes.get(this.player.getWeaponItem().getItem());
                 if (heldWeaponType == WeaponType.LIGHT) {
                     float heatGain = CCConfig.HEAT_PER_HIT.get().floatValue();
-                    if (!heldWeaponType.shouldCrit(this.player, target))
-                        heatGain /= 2f;
+                    if (heldWeaponType.shouldCrit(this.player, target))
+                        heatGain *= 2f;
                     this.attackHeat = Math.clamp(this.attackHeat + heatGain, 0f, 1f);
                 }
             }
