@@ -58,9 +58,10 @@ Tasks
 _Bring 1.8 combat to knives from Farmer's Delight._
 
 Tasks
-- Deals reduced knockback when not critting.
-- Attack speed attribute is now used for bypassing immunity ticks for damage. 2.0 speed bypasses 10/20 immunity ticks, and 4.0 bypasses 20/20 immunity ticks.
-- "Heat" that drains with each hit that successfully does damage, reducing your damage as your heat gets lower to a minimum of 50%. Persists even if you swap away from the item (heat is bound to the player through CCPlayerExtension)
+- ~~Attack speed attribute is now used for bypassing immunity ticks for damage. 2.0 speed bypasses 5/10 immunity ticks, and 4.0 bypasses 9/10 immunity ticks.~~
+- ~~Mobs wielding LIGHT-type weapons will attack twice as fast~~
+- ~~"Heat" that accrues with each hit that successfully does damage, reducing your damage as your heat gets lower to a minimum of 50%. Persists even if you swap away from the item (heat is bound to the player through CCPlayerExtension)~~
+- ~~Deals reduced knockback when not critting + knockback scales with heat.~~
 - Render your item's heat as an opaque orange outline around your attack indicator icon that shifts to transparent yellow as it weakens, and hides entirely at full heat.
 - Attack indicator flashes to gray and fades back in to white quickly each swing to give feedback
 - Spawns a tiny slash particle and plays a very light/faint slash sound each swing
