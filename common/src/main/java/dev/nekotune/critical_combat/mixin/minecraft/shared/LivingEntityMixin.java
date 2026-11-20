@@ -6,13 +6,16 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import dev.nekotune.critical_combat.CCConfig;
 import dev.nekotune.critical_combat.shared.CCPlayerExtension;
 import dev.nekotune.critical_combat.shared.WeaponTypes;
 import dev.nekotune.critical_combat.shared.WeaponTypes.WeaponType;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,6 +25,14 @@ import net.minecraft.world.item.ItemStack;
 
 @Mixin(value = LivingEntity.class)
 public abstract class LivingEntityMixin {
+
+    @Inject(method = "swing(Lnet/minecraft/world/InteractionHand;)V", at = @At("HEAD"), cancellable = true)
+    private void critical_combat$hookSwing(final InteractionHand hand, final CallbackInfo ci) {
+        if (((Object) this) instanceof final Player player) {
+            if (player.level() instanceof ServerLevel || player.isLocalPlayer())
+                CCPlayerExtension.get(player).swing(hand, ci);
+        }
+    }
 
     /**
      * Modifies the knockback applied by LIGHT-type weapons.

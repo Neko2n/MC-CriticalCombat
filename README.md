@@ -63,8 +63,8 @@ Tasks
 - ~~"Heat" that accrues with each hit that successfully does damage, reducing your damage as your heat gets lower to a minimum of 50%. Persists even if you swap away from the item (heat is bound to the player through CCPlayerExtension)~~
 - ~~Deals reduced knockback when not critting + knockback scales with heat.~~
 - ~~Attack indicator feedback for heat and swinging~~
-- Spawns a tiny slash particle and plays a very light/faint slash sound each swing
-- Alternate the slash direction of the slash particles if you're swinging in rapid succession
+- ~~Spawns a tiny slash particle and plays a very light/faint slash sound each swing~~
+- ~~Alternate the slash direction of the slash particles if you're swinging in rapid succession~~
 - ~~Cooldown for LIGHT-type weapons to lose durability from attacking~~
 
 ### Feature 3 - Throwing Polearms

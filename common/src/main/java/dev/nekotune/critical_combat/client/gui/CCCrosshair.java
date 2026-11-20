@@ -12,7 +12,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.nekotune.critical_combat.CriticalCombat;
 import dev.nekotune.critical_combat.mixin.minecraft.client.GuiAccessor;
-import dev.nekotune.critical_combat.mixin.minecraft.client.GuiMixin;
 import dev.nekotune.critical_combat.shared.CCPlayerExtension;
 import dev.nekotune.critical_combat.shared.WeaponTypes;
 import dev.nekotune.critical_combat.shared.WeaponTypes.WeaponType;
@@ -31,7 +30,7 @@ import net.minecraft.world.level.GameType;
 /**
  * Custom crosshair override for {@link CriticalCombat}
  * 
- * @see GuiMixin#critical_combat$replaceCrosshair
+ * @see CCGuiExtension
  */
 public class CCCrosshair {
 
@@ -39,19 +38,9 @@ public class CCCrosshair {
     protected final Gui gui;
     protected float flashIntensity = 0f;
 
-    /**
-     * @see GuiMixin#critical_combat$initCrosshair
-     */
     public CCCrosshair(final Minecraft minecraft, final Gui gui) {
         this.minecraft = minecraft;
         this.gui = gui;
-    }
-
-    /**
-     * @return The crosshair attached to the given Gui
-     */
-    public static CCCrosshair get(final Gui gui) {
-        return ((CCCrosshair.MixinHolder) gui).critical_combat$getCrosshair();
     }
 
     /**
@@ -174,8 +163,8 @@ public class CCCrosshair {
         // Actually render the attack indicator
         final int x = guiGraphics.guiWidth() / 2 - 8;
         final int y = guiGraphics.guiHeight() / 2 - 7 + 16;
-        final float fillAmount = (attackStrengthScale < 1f) ? attackStrengthScale : flashIntensity;
-        final int l = (int) (fillAmount * 17f);
+        final float fillAmount = (holdingLightWeapon) ? flashIntensity : attackStrengthScale;
+        final int uWidth = Math.clamp((int) (fillAmount * 17f), 0, 16);
         final Consumer<Boolean> blitAttackIndicator = renderThePlus -> {
 
             // Blit the "+" part of the indicator
@@ -183,10 +172,12 @@ public class CCCrosshair {
                 guiGraphics.blitSprite(this.sprites().attackIndicator$plus(), x, y, 16, 16);
 
             // Blit the unfilled indicator background
-            guiGraphics.blitSprite(this.sprites().attackIndicator$background(), x, y, 16, 4);
+            if (fillAmount < 1f)
+                guiGraphics.blitSprite(this.sprites().attackIndicator$background(), x, y, 16, 4);
 
             // Blit the indicator's fill/progress
-            guiGraphics.blitSprite(this.sprites().attackIndicator$progress(), 16, 4, 0, 0, x, y, l, 4);
+            guiGraphics.blitSprite(this.sprites().attackIndicator$progress(), 16, 4, 0, 0,
+                    x, y, uWidth, 4);
         };
         final boolean isRendered = hasPickedEntity || attackStrengthScale < 1f
                 || (holdingLightWeapon && flashIntensity > 0f);
@@ -217,13 +208,5 @@ public class CCCrosshair {
                 ResourceLocation.fromNamespaceAndPath(CriticalCombat.MOD_ID, "hud/crosshair_attack_indicator_plus"),
                 ResourceLocation.withDefaultNamespace("hud/crosshair_attack_indicator_background"),
                 ResourceLocation.withDefaultNamespace("hud/crosshair_attack_indicator_progress"));
-    }
-
-    /**
-     * @see GuiMixin
-     */
-    @FunctionalInterface
-    public static interface MixinHolder {
-        public CCCrosshair critical_combat$getCrosshair();
     }
 }

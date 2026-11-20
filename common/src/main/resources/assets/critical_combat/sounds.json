@@ -1,0 +1,14 @@
+{
+  "light_slash": {
+    "subtitle": "subtitles.critical_combat.light_slash",
+    "sounds": [
+      "minecraft:entity/player/attack/sweep1",
+      "minecraft:entity/player/attack/sweep2",
+      "minecraft:entity/player/attack/sweep3",
+      "minecraft:entity/player/attack/sweep4",
+      "minecraft:entity/player/attack/sweep5",
+      "minecraft:entity/player/attack/sweep6",
+      "minecraft:entity/player/attack/sweep7"
+    ]
+  }
+}

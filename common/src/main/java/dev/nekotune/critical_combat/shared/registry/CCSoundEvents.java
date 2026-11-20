@@ -1,0 +1,27 @@
+package dev.nekotune.critical_combat.shared.registry;
+
+import java.util.function.Supplier;
+
+import dev.nekotune.critical_combat.CriticalCombat;
+import dev.nekotune.critical_combat.platform.Platform;
+import dev.nekotune.critical_combat.platform.RegistryProvider;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+
+/**
+ * Sounds registry for {@link CriticalCombat}
+ */
+public interface CCSoundEvents {
+
+    public static final RegistryProvider<SoundEvent> SOUND_EVENTS = Platform.get()
+            .openRegistry(() -> BuiltInRegistries.SOUND_EVENT);
+
+    /** Slash sound for LIGHT-type weapons */
+    public static final Supplier<SoundEvent> LIGHT_SLASH = define("light_slash");
+
+    private static Supplier<SoundEvent> define(final String name) {
+        final ResourceLocation location = ResourceLocation.fromNamespaceAndPath(CriticalCombat.MOD_ID, name);
+        return SOUND_EVENTS.define(name, () -> SoundEvent.createVariableRangeEvent(location));
+    }
+}

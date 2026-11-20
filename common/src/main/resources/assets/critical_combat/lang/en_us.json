@@ -1,4 +1,6 @@
 {
+    "subtitles.critical_combat.light_slash": "Light weapon slashes",
+
     "critical_combat.configuration.title": "Critical Combat Configuration",
     "critical_combat.configuration.section.critical.combat.common.toml": "Common Settings",
     "critical_combat.configuration.section.critical.combat.common.toml.title": "Critical Combat Common Settings",

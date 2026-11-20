@@ -1,6 +1,8 @@
 package dev.nekotune.critical_combat.client;
 
 import dev.nekotune.critical_combat.CriticalCombat;
+import dev.nekotune.critical_combat.platform.client.ClientPlatform;
+import dev.nekotune.critical_combat.platform.client.ClientPlatformHelper$NeoForge;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -13,6 +15,7 @@ public class CriticalCombatClient$NeoForge {
 
     public CriticalCombatClient$NeoForge(final IEventBus eventBus, final ModContainer container) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        ClientPlatform.init(new ClientPlatformHelper$NeoForge());
         CriticalCombatClient.init();
     }
 }

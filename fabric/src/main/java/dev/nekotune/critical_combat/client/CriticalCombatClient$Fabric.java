@@ -4,6 +4,8 @@ import java.util.function.Consumer;
 
 import dev.nekotune.critical_combat.platform.PlatformNetwork$Fabric;
 import dev.nekotune.critical_combat.platform.PlatformNetwork$Fabric.PayloadHandler;
+import dev.nekotune.critical_combat.platform.client.ClientPlatform;
+import dev.nekotune.critical_combat.platform.client.ClientPlatformHelper$Fabric;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -12,6 +14,7 @@ public class CriticalCombatClient$Fabric implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        ClientPlatform.init(new ClientPlatformHelper$Fabric());
         PlatformNetwork$Fabric.get().onPayloadRegistered
                 .subscribe(CriticalCombatClient$Fabric::registerPayload);
         CriticalCombatClient.init();

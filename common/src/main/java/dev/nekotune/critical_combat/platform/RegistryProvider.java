@@ -2,6 +2,7 @@ package dev.nekotune.critical_combat.platform;
 
 import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -17,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
  */
 public abstract class RegistryProvider<T> {
 
-    private final LinkedList<RegistryObject<T, ?>> entries = new LinkedList<>();
+    private final LinkedList<RegistryObject<T, ? extends T>> entries = new LinkedList<>();
     private boolean frozen = false;
 
     protected final Supplier<Registry<T>> registry;
@@ -51,6 +52,10 @@ public abstract class RegistryProvider<T> {
         final RegistryObject<T, I> entry = new RegistryObject<>(this, id, supplier);
         this.entries.add(entry);
         return entry;
+    }
+
+    public final Set<Supplier<? extends T>> entries() {
+        return Set.copyOf(this.entries);
     }
 
     /**

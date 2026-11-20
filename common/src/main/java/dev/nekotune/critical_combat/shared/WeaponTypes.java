@@ -15,7 +15,11 @@ import dev.nekotune.critical_combat.platform.Platform;
 import dev.nekotune.critical_combat.platform.Platform.IPlatformHelper.Environment;
 import dev.nekotune.critical_combat.server.CriticalCombatServer;
 import dev.nekotune.critical_combat.shared.CCPlayerExtension.CameraTracker;
+import dev.nekotune.critical_combat.shared.definition.SlashParticleOptions;
+import dev.nekotune.critical_combat.shared.registry.CCParticleTypes;
+import dev.nekotune.critical_combat.shared.registry.CCSoundEvents;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -23,6 +27,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
@@ -147,6 +152,16 @@ public final class WeaponTypes {
                         && target instanceof LivingEntity;
                 // Dropped the "cannot be sprinting" rule
             }
+
+            @Override
+            public @Nullable ParticleType<SlashParticleOptions> slashParticle() {
+                return null;
+            }
+
+            @Override
+            public @Nullable SoundEvent slashSound() {
+                return null;
+            }
         },
 
         /**
@@ -163,6 +178,16 @@ public final class WeaponTypes {
             @Override
             public boolean shouldCrit(final Player player, final Entity target) {
                 return false; // TODO heavy weapon crit logic
+            }
+
+            @Override
+            public @Nullable ParticleType<SlashParticleOptions> slashParticle() {
+                return null;
+            }
+
+            @Override
+            public @Nullable SoundEvent slashSound() {
+                return null;
             }
         },
 
@@ -185,6 +210,16 @@ public final class WeaponTypes {
                         && !player.isPassenger()
                         && target instanceof LivingEntity
                         && dist <= range * range;
+            }
+
+            @Override
+            public @Nullable ParticleType<SlashParticleOptions> slashParticle() {
+                return CCParticleTypes.LIGHT_SLASH.get();
+            }
+
+            @Override
+            public @Nullable SoundEvent slashSound() {
+                return CCSoundEvents.LIGHT_SLASH.get();
             }
         },
 
@@ -216,6 +251,16 @@ public final class WeaponTypes {
                         && target instanceof LivingEntity
                         && bladeMotion.length() > CCConfig.BLADE_CRIT_SPEED.get();
             }
+
+            @Override
+            public @Nullable ParticleType<SlashParticleOptions> slashParticle() {
+                return null;
+            }
+
+            @Override
+            public @Nullable SoundEvent slashSound() {
+                return null;
+            }
         },
 
         /**
@@ -236,6 +281,16 @@ public final class WeaponTypes {
                         && !player.hasEffect(MobEffects.BLINDNESS) && target instanceof LivingEntity
                         && (player.isSprinting() || player.isPassenger());
             }
+
+            @Override
+            public @Nullable ParticleType<SlashParticleOptions> slashParticle() {
+                return null;
+            }
+
+            @Override
+            public @Nullable SoundEvent slashSound() {
+                return null;
+            }
         };
 
         public static final Codec<WeaponType> CODEC = StringRepresentable.fromEnum(WeaponType::values);
@@ -252,6 +307,16 @@ public final class WeaponTypes {
          * @return True if the player should crit this frame; false otherwise
          */
         public abstract boolean shouldCrit(final Player player, final Entity target);
+
+        /**
+         * @return The particle to show when slashing a weapon of this type
+         */
+        public abstract @Nullable ParticleType<SlashParticleOptions> slashParticle();
+
+        /**
+         * @return The sound to play when slashing a weapon of this type
+         */
+        public abstract @Nullable SoundEvent slashSound();
 
         /**
          * @return True if the given item is mapped to this WeaponType, false otherwise.

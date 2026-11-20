@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import dev.nekotune.critical_combat.CCConfig;
+import dev.nekotune.critical_combat.mixin.MixinExtension;
 import dev.nekotune.critical_combat.shared.CCPlayerExtension;
 import dev.nekotune.critical_combat.shared.WeaponTypes;
 import dev.nekotune.critical_combat.shared.WeaponTypes.WeaponType;
@@ -19,22 +20,22 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
 @Mixin(value = Player.class)
-public abstract class PlayerMixin implements CCPlayerExtension.MixinHolder {
+public abstract class PlayerMixin implements MixinExtension<CCPlayerExtension> {
 
     @Unique
     private final CCPlayerExtension critical_combat$playerExtension = new CCPlayerExtension((Player) (Object) this);
 
     @Override
-    public CCPlayerExtension critical_combat$getPlayerExtension() {
+    public CCPlayerExtension critical_combat$getExtension() {
         return this.critical_combat$playerExtension;
     }
 
-    @Inject(method = "tick", at = @At("TAIL"), cancellable = true)
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void critical_combat$tickPlayerExtension(final CallbackInfo ci) {
         this.critical_combat$playerExtension.tick(ci);
     }
 
-    @Inject(method = "attack", at = @At("TAIL"), cancellable = true)
+    @Inject(method = "attack", at = @At("HEAD"), cancellable = true)
     public void critical_combat$hookAttack(final Entity target, final CallbackInfo ci) {
         this.critical_combat$playerExtension.attack(target, ci);
     }
