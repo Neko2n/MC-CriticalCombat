@@ -67,16 +67,18 @@ Tasks
 - ~~Alternate the slash direction of the slash particles if you're swinging in rapid succession~~
 - ~~Cooldown for LIGHT-type weapons to lose durability from attacking~~
 
-### Feature 3 - Throwing Polearms
+### Feature 3 - Dagger
 
-_Separate throwing functionality from the Trident, granting it to all POLEARM-type weapons_
+_Add a unique LIGHT-type weapon to the base game._
 
 Tasks
-- Add a new "spear" item to the game, crafted from two sticks and 1 flint
-- Separate the trident's throwing capability into a CCItemExtension wired through a mixin into the base Item class
-- Grant throwing capability to all POLEARM-type weapons, including the spear
-- Unique "stab" attack particle for polearms
-- Compatibility with Spear Fishing that grants spear fishing functionality automatically to all POLEARM-type weapons (configurable)
+- Add a "Black Shard" item, found rarely in nether fortress chests
+- Add a "Dagger" item, crafted from putting a Black Shard on top of a Blaze Rod
+- Add a "Detonation" enchantment for the Dagger, which makes your attacks explode and deal 10x knockback at >= 0.9 heat (resets your heat to 0 on proc)
+- Add a "Richochet" enchantment for the Dagger, which makes the knife projectile bounce between nearby enemies before bouncing back in your direction
+- Give the Dagger compatibility with loyalty, sharpness, unbreaking, smite, bane of arthropods, and fire aspect
+- Add a "Blitz" enchantment for the Dagger, which teleports you to
+enemies hit by your projectile, instantly maxes out your heat, and makes you temporarily immune to taking damage from them. Also instantly returns the dagger to your inventory on successful hits. Exclusive with richochet and loyalty.
 
 ### Feature 4 - Two-handed Items
 
@@ -169,4 +171,5 @@ Tasks
 ### Polish
 
 - Add arrows to the deflectable_projectiles entity tag
+- Unique "stab" attack particle for polearms
 - ~~Remove the extra durability loss from attacking with digging tools~~
