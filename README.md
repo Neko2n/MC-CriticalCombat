@@ -62,8 +62,7 @@ Tasks
 - ~~Mobs wielding LIGHT-type weapons will attack twice as fast~~
 - ~~"Heat" that accrues with each hit that successfully does damage, reducing your damage as your heat gets lower to a minimum of 50%. Persists even if you swap away from the item (heat is bound to the player through CCPlayerExtension)~~
 - ~~Deals reduced knockback when not critting + knockback scales with heat.~~
-- Render your item's heat as an opaque orange outline around your attack indicator icon that shifts to transparent yellow as it weakens, and hides entirely at full heat.
-- Attack indicator flashes to gray and fades back in to white quickly each swing to give feedback
+- ~~Attack indicator feedback for heat and swinging~~
 - Spawns a tiny slash particle and plays a very light/faint slash sound each swing
 - Alternate the slash direction of the slash particles if you're swinging in rapid succession
 - ~~Cooldown for LIGHT-type weapons to lose durability from attacking~~
