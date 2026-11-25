@@ -9,7 +9,7 @@ import net.minecraft.world.item.Item;
 /**
  * Custom item tags for {@link CriticalCombat}
  */
-public class CC$ItemTags {
+public class CCItemTags {
 
     /**
      * Items which have +50% innate armor piercing.

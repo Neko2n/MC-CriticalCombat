@@ -12,7 +12,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 /**
  * Particles registry for {@link CriticalCombat}
  */
-public interface CC$ParticleTypes {
+public interface CCParticleTypes {
 
     public static final RegistryProvider<ParticleType<?>> PARTICLE_TYPES = Platform.get()
             .openRegistry(() -> BuiltInRegistries.PARTICLE_TYPE);

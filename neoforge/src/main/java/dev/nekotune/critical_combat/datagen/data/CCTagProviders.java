@@ -7,8 +7,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import dev.nekotune.critical_combat.CriticalCombat;
 import dev.nekotune.critical_combat.datagen.DataGenerator;
-import dev.nekotune.critical_combat.shared.registry.CC$Items;
-import dev.nekotune.critical_combat.shared.registry.tags.CC$ItemTags;
+import dev.nekotune.critical_combat.shared.registry.CCItems;
+import dev.nekotune.critical_combat.shared.registry.tags.CCItemTags;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
@@ -18,17 +18,17 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 
 @ParametersAreNonnullByDefault
-public final class CC$TagProviders {
+public final class CCTagProviders {
 
     public static List<TagsProvider<?>> generate(final DataGenerator generator) {
-        final var subProvider$Block = new CC$TagsProvider$Block(generator);
-        final var subProvider$Item = new CC$TagsProvider$Item(generator, subProvider$Block.contentsGetter());
+        final var subProvider$Block = new CCTagsProvider$Block(generator);
+        final var subProvider$Item = new CCTagsProvider$Item(generator, subProvider$Block.contentsGetter());
         return List.of(subProvider$Block, subProvider$Item);
     }
 
-    protected static final class CC$TagsProvider$Block extends BlockTagsProvider {
+    protected static final class CCTagsProvider$Block extends BlockTagsProvider {
 
-        public CC$TagsProvider$Block(final DataGenerator generator) {
+        public CCTagsProvider$Block(final DataGenerator generator) {
             super(generator.packOutput(), generator.lookupProvider(), CriticalCombat.MOD_ID,
                     generator.existingFileHelper());
         }
@@ -38,9 +38,9 @@ public final class CC$TagProviders {
         }
     }
 
-    protected static final class CC$TagsProvider$Item extends ItemTagsProvider {
+    protected static final class CCTagsProvider$Item extends ItemTagsProvider {
 
-        public CC$TagsProvider$Item(final DataGenerator generator, final CompletableFuture<TagLookup<Block>> blockTags) {
+        public CCTagsProvider$Item(final DataGenerator generator, final CompletableFuture<TagLookup<Block>> blockTags) {
             super(generator.packOutput(), generator.lookupProvider(), blockTags, CriticalCombat.MOD_ID,
                     generator.existingFileHelper());
         }
@@ -48,20 +48,20 @@ public final class CC$TagProviders {
         @Override
         protected void addTags(final Provider provider) {
 
-            tag(CC$ItemTags.PIERCES_ARMOR)
+            tag(CCItemTags.PIERCES_ARMOR)
                     .addTag(ItemTags.PICKAXES);
 
-            tag(CC$ItemTags.TWO_HANDED)
+            tag(CCItemTags.TWO_HANDED)
                     .add(Items.MACE);
 
-            tag(CC$ItemTags.UPWARDS_KNOCKBACK)
+            tag(CCItemTags.UPWARDS_KNOCKBACK)
                     .addTag(ItemTags.SHOVELS);
 
             tag(ItemTags.SHARP_WEAPON_ENCHANTABLE)
-                    .add(CC$Items.DAGGER.get());
+                    .add(CCItems.DAGGER.get());
         }
     }
 
-    private CC$TagProviders() {
+    private CCTagProviders() {
     }
 }

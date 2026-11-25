@@ -2,7 +2,7 @@ package dev.nekotune.critical_combat;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-public class CC$Config {
+public class CCConfig {
 
     /** Registered as {@code ModConfig.Type.COMMON} */
     public static final ModConfigSpec SPEC;
@@ -34,6 +34,15 @@ public class CC$Config {
     /** The number of seconds after attacking that durability loss from attacks should be disabled. */
     public static final ModConfigSpec.ConfigValue<Double> COMBAT_WEAR_COOLDOWN;
 
+    /** Whether you should be able to attack during your attack cooldown. */
+    public static final ModConfigSpec.BooleanValue CAN_ATTACK_ON_COOLDOWN;
+
+    /** Whether sounds should play when swinging weapons */
+    public static final ModConfigSpec.BooleanValue SWING_SOUNDS;
+
+    /** Whether swinging weapons should play a particle animation */
+    public static final ModConfigSpec.BooleanValue SWING_PARTICLES;
+
     static {
         final ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
@@ -55,7 +64,7 @@ public class CC$Config {
 
         HEAT_PER_HIT = builder
                 .translation("config.critical_combat.heat_per_hit")
-                .defineInRange("heat_per_hit", 0.2D, 0D, 1D);
+                .defineInRange("heat_per_hit", 0.1D, 0D, 1D);
 
         HEAT_DRAIN = builder
                 .translation("config.critical_combat.heat_drain")
@@ -72,6 +81,18 @@ public class CC$Config {
         COMBAT_WEAR_COOLDOWN = builder
                 .translation("config.critical_combat.combat_wear_cooldown")
                 .defineInRange("combat_wear_cooldown", 0.5D, 0D, Float.MAX_VALUE);
+
+        CAN_ATTACK_ON_COOLDOWN = builder
+                .translation("config.critical_combat.can_attack_on_cooldown")
+                .define("can_attack_on_cooldown", false);
+
+        SWING_SOUNDS = builder
+                .translation("config.critical_combat.swing_sounds")
+                .define("swing_sounds", true);
+
+        SWING_PARTICLES = builder
+                .translation("config.critical_combat.swing_particles")
+                .define("swing_particles", true);
 
         SPEC = builder.build();
     }

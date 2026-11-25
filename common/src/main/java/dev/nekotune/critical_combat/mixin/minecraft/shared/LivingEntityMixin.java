@@ -4,18 +4,17 @@ import javax.annotation.Nullable;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import dev.nekotune.critical_combat.CC$Config;
-import dev.nekotune.critical_combat.shared.CC$Player_;
+import dev.nekotune.critical_combat.CCConfig;
+import dev.nekotune.critical_combat.shared.CCPlayer_;
 import dev.nekotune.critical_combat.shared.WeaponTypes;
 import dev.nekotune.critical_combat.shared.WeaponTypes.WeaponType;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,14 +24,6 @@ import net.minecraft.world.item.ItemStack;
 
 @Mixin(value = LivingEntity.class)
 public abstract class LivingEntityMixin {
-
-    @Inject(method = "swing(Lnet/minecraft/world/InteractionHand;)V", at = @At("HEAD"), cancellable = true)
-    private void critical_combat$hookSwing(final InteractionHand hand, final CallbackInfo ci) {
-        if (((Object) this) instanceof final Player player) {
-            if (player.level() instanceof ServerLevel || player.isLocalPlayer())
-                CC$Player_.get(player).swing(hand, ci);
-        }
-    }
 
     /**
      * Modifies the knockback applied by LIGHT-type weapons.
@@ -45,7 +36,7 @@ public abstract class LivingEntityMixin {
         if (attacker instanceof final Player player) {
             final @Nullable WeaponType heldWeaponType = WeaponTypes.get(player.getWeaponItem().getItem());
             if (heldWeaponType == WeaponType.LIGHT) {
-                final CC$Player_ ext = CC$Player_.get(player);
+                final CCPlayer_ ext = CCPlayer_.get(player);
                 final float maxKbModifier = heldWeaponType.shouldCrit(player, livingEntity) ? 1.5f : 1f;
                 final float kbModifier = Mth.map(ext.getHeat(), 0f, 1f, 0.5f, maxKbModifier);
                 cir.setReturnValue(cir.getReturnValue() * kbModifier);
@@ -65,8 +56,8 @@ public abstract class LivingEntityMixin {
             if (weaponItem != null) {
                 final WeaponType heldWeaponType = WeaponTypes.get(weaponItem.getItem());
                 if (heldWeaponType == WeaponType.LIGHT) {
-                    final CC$Player_ ext = CC$Player_.get(player);
-                    final float minDmgScale = CC$Config.HEAT_DAMAGE_SCALE.get().floatValue();
+                    final CCPlayer_ ext = CCPlayer_.get(player);
+                    final float minDmgScale = CCConfig.HEAT_DAMAGE_SCALE.get().floatValue();
                     return amount * Mth.map(ext.getHeat(), 0f, 1f, minDmgScale, 1f);
                 }
             }
@@ -99,5 +90,17 @@ public abstract class LivingEntityMixin {
                 }
             }
         }
+    }
+
+    @ModifyConstant(method = "getCurrentSwingDuration", constant = @Constant(intValue = 6))
+    private int critical_combat$overrideDefaultSwingDuration(final int original) {
+        final LivingEntity entity = (LivingEntity) (Object) this;
+        final ItemStack stack = entity.getMainHandItem();
+        if (entity instanceof final Player player) {
+            if (WeaponTypes.get(stack.getItem()) == WeaponType.POLEARM) {
+                return Math.max(1, Math.round(player.getCurrentItemAttackStrengthDelay()));
+            }
+        }
+        return original;
     }
 }

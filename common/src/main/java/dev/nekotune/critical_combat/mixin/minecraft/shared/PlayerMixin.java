@@ -10,9 +10,9 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import dev.nekotune.critical_combat.CC$Config;
+import dev.nekotune.critical_combat.CCConfig;
 import dev.nekotune.critical_combat.mixin.MixinExtension;
-import dev.nekotune.critical_combat.shared.CC$Player_;
+import dev.nekotune.critical_combat.shared.CCPlayer_;
 import dev.nekotune.critical_combat.shared.WeaponTypes;
 import dev.nekotune.critical_combat.shared.WeaponTypes.WeaponType;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,13 +20,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
 @Mixin(value = Player.class)
-public abstract class PlayerMixin implements MixinExtension<CC$Player_> {
+public abstract class PlayerMixin implements MixinExtension<CCPlayer_> {
 
     @Unique
-    private final CC$Player_ critical_combat$playerExtension = new CC$Player_((Player) (Object) this);
+    private final CCPlayer_ critical_combat$playerExtension = new CCPlayer_((Player) (Object) this);
 
     @Override
-    public CC$Player_ critical_combat$getExtension() {
+    public CCPlayer_ critical_combat$getExtension() {
         return this.critical_combat$playerExtension;
     }
 
@@ -50,7 +50,7 @@ public abstract class PlayerMixin implements MixinExtension<CC$Player_> {
     public void critical_combat$removeAttackCDForLightWeapons(final CallbackInfoReturnable<Float> cir) {
         final Player player = (Player) (Object) this;
         if (player.isHolding(stack -> WeaponTypes.get(stack.getItem()) == WeaponType.LIGHT)
-                && CC$Config.LIGHT_REMOVE_ATTACK_COOLDOWN.get()) {
+                && CCConfig.LIGHT_REMOVE_ATTACK_COOLDOWN.get()) {
             cir.setReturnValue(Float.MIN_NORMAL);
         }
     }

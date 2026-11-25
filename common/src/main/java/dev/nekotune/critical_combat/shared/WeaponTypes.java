@@ -3,21 +3,23 @@ package dev.nekotune.critical_combat.shared;
 import java.util.IdentityHashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Supplier;
+
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.mojang.serialization.Codec;
 
-import dev.nekotune.critical_combat.CC$Config;
+import dev.nekotune.critical_combat.CCConfig;
 import dev.nekotune.critical_combat.CriticalCombat;
-import dev.nekotune.critical_combat.client.CriticalCombatClient;
+import dev.nekotune.critical_combat.client.ClientNetworkHandler;
 import dev.nekotune.critical_combat.platform.Platform;
-import dev.nekotune.critical_combat.platform.Platform.IPlatformHelper.Environment;
 import dev.nekotune.critical_combat.server.CriticalCombatServer;
-import dev.nekotune.critical_combat.shared.CC$Player_.CameraTracker;
+import dev.nekotune.critical_combat.shared.CCPlayer_.CameraTracker;
 import dev.nekotune.critical_combat.shared.definition.SlashParticleOptions;
-import dev.nekotune.critical_combat.shared.registry.CC$ParticleTypes;
-import dev.nekotune.critical_combat.shared.registry.CC$SoundEvents;
+import dev.nekotune.critical_combat.shared.registry.CCParticleTypes;
+import dev.nekotune.critical_combat.shared.registry.CCSoundEvents;
+import dev.nekotune.critical_combat.util.SoundOptions;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
@@ -27,7 +29,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
@@ -77,21 +78,8 @@ public final class WeaponTypes {
      * @see CriticalCombatServer#init()
      */
     public static void syncToClient(final ServerPlayer player) {
-        final MappingsPayload payload = new MappingsPayload(new IdentityHashMap<>(map));
+        final MappingsBroadcastPayload payload = new MappingsBroadcastPayload(new IdentityHashMap<>(map));
         Platform.get().network().sendToClient(player, payload);
-    }
-
-    /**
-     * Registers the client to receive and handle packets from the server.
-     * 
-     * @throws IllegalStateException If called on the server-side
-     * @see CriticalCombatClient#init()
-     */
-    public static void registerPayload() {
-        if (Platform.get().getEnvironmentType() != Environment.CLIENT)
-            throw new IllegalStateException("WeaponTypes#registerPayload can only be called on the client");
-        Platform.get().network().register$S2C(MappingsPayload.TYPE, MappingsPayload.STREAM_CODEC,
-                MappingsPayload::handle);
     }
 
     private WeaponTypes() {
@@ -102,30 +90,21 @@ public final class WeaponTypes {
      * server.
      * 
      * @param mappings Map of item registry IDs to their assigned WeaponTypes
+     * @see ClientNetworkHandler
      */
-    public static record MappingsPayload(IdentityHashMap<Item, WeaponType> mappings) implements CustomPacketPayload {
+    public static record MappingsBroadcastPayload(IdentityHashMap<Item, WeaponType> mappings) implements CustomPacketPayload {
 
-        public static final Type<MappingsPayload> TYPE = new Type<>(
+        public static final Type<MappingsBroadcastPayload> TYPE = new Type<>(
                 ResourceLocation.fromNamespaceAndPath(CriticalCombat.MOD_ID, "weapon_types"));
 
-        public static final StreamCodec<RegistryFriendlyByteBuf, MappingsPayload> STREAM_CODEC = ByteBufCodecs
+        public static final StreamCodec<RegistryFriendlyByteBuf, MappingsBroadcastPayload> STREAM_CODEC = ByteBufCodecs
                 .map(IdentityHashMap<Item, WeaponType>::new, ByteBufCodecs.registry(Registries.ITEM),
                         WeaponType.STREAM_CODEC)
-                .map(MappingsPayload::new, MappingsPayload::mappings);
+                .map(MappingsBroadcastPayload::new, MappingsBroadcastPayload::mappings);
 
         @Override
         public Type<? extends CustomPacketPayload> type() {
             return TYPE;
-        }
-
-        /**
-         * Handles a network payload sent from the server.
-         * 
-         * @param payload The MappingsPayload sent by the server
-         */
-        public static void handle(final MappingsPayload payload) {
-            CriticalCombat.LOG.debug("Received WeaponType mappings payload: {}", payload.mappings());
-            WeaponTypes.setMappings(payload.mappings());
         }
     }
 
@@ -138,7 +117,10 @@ public final class WeaponTypes {
          * Weapons that behave as default vanilla weapons.
          * Crits when falling.
          */
-        DEFAULT {
+        DEFAULT(new SwingEffects( // TODO default swing FX (downward slash, light swoosh, light crack on hit)
+                null,
+                null,
+                null)) {
 
             @Override
             public boolean shouldCrit(final Player player, final Entity target) {
@@ -152,16 +134,6 @@ public final class WeaponTypes {
                         && target instanceof LivingEntity;
                 // Dropped the "cannot be sprinting" rule
             }
-
-            @Override
-            public @Nullable ParticleType<SlashParticleOptions> slashParticle() {
-                return null;
-            }
-
-            @Override
-            public @Nullable SoundEvent slashSound() {
-                return null;
-            }
         },
 
         /**
@@ -173,21 +145,14 @@ public final class WeaponTypes {
          * with a raycast.
          * Typically for hammer-like weapons.
          */
-        HEAVY {
+        HEAVY(new SwingEffects( // TODO heavy swing FX
+                null,
+                null,
+                null)) {
 
             @Override
             public boolean shouldCrit(final Player player, final Entity target) {
                 return false; // TODO heavy weapon crit logic
-            }
-
-            @Override
-            public @Nullable ParticleType<SlashParticleOptions> slashParticle() {
-                return null;
-            }
-
-            @Override
-            public @Nullable SoundEvent slashSound() {
-                return null;
             }
         },
 
@@ -196,7 +161,10 @@ public final class WeaponTypes {
          * Crits when up-close.
          * Typically for knives.
          */
-        LIGHT {
+        LIGHT(new SwingEffects(
+                CCParticleTypes.LIGHT_SLASH,
+                new SoundOptions(CCSoundEvents.LIGHT_ATTACK, 0.25f, 1.4f, 0.1f),
+                null)) { // TODO cut sound for light weapons
 
             @Override
             public boolean shouldCrit(final Player player, final Entity target) {
@@ -211,16 +179,6 @@ public final class WeaponTypes {
                         && target instanceof LivingEntity
                         && dist <= range * range;
             }
-
-            @Override
-            public @Nullable ParticleType<SlashParticleOptions> slashParticle() {
-                return CC$ParticleTypes.LIGHT_SLASH.get();
-            }
-
-            @Override
-            public @Nullable SoundEvent slashSound() {
-                return CC$SoundEvents.LIGHT_SLASH.get();
-            }
         },
 
         /**
@@ -229,11 +187,14 @@ public final class WeaponTypes {
          * Crits when the player's camera is moving fast.
          * Typically for swords.
          */
-        BLADE {
+        BLADE(new SwingEffects(
+                null, // TODO slash particle for blades
+                null, // TODO slash sound for blades
+                null)) {  // TODO cut sound for blades
 
             @Override
             public boolean shouldCrit(final Player player, final Entity target) {
-                final CameraTracker cameraTracker = CC$Player_.get(player).cameraTracker;
+                final CameraTracker cameraTracker = CCPlayer_.get(player).cameraTracker;
                 final Vec3 movement = player.getKnownMovement();
                 final float yawRad = player.getYRot() * Mth.DEG_TO_RAD;
                 final Vec3 right = new Vec3(-Mth.cos(yawRad), 0, -Mth.sin(yawRad));
@@ -249,17 +210,7 @@ public final class WeaponTypes {
                         && !player.hasEffect(MobEffects.BLINDNESS)
                         && !player.isPassenger()
                         && target instanceof LivingEntity
-                        && bladeMotion.length() > CC$Config.BLADE_CRIT_SPEED.get();
-            }
-
-            @Override
-            public @Nullable ParticleType<SlashParticleOptions> slashParticle() {
-                return null;
-            }
-
-            @Override
-            public @Nullable SoundEvent slashSound() {
-                return null;
+                        && bladeMotion.length() > CCConfig.BLADE_CRIT_SPEED.get();
             }
         },
 
@@ -268,7 +219,10 @@ public final class WeaponTypes {
          * Crits when the player is sprinting.
          * Typically for spear-like weapons.
          */
-        POLEARM {
+        POLEARM(new SwingEffects(
+                null, // TODO stab particle for polearms
+                new SoundOptions(CCSoundEvents.POLEARM_ATTACK, 1f, 1f, 0.1f),
+                new SoundOptions(CCSoundEvents.POLEARM_HIT, 1f, 1f, 0.1f))) {
 
             private static final float MIN_JOUST_SPEED = 0.2f; // Slowest horse is 0.24f
 
@@ -281,16 +235,6 @@ public final class WeaponTypes {
                         && !player.hasEffect(MobEffects.BLINDNESS) && target instanceof LivingEntity
                         && (player.isSprinting() || player.isPassenger());
             }
-
-            @Override
-            public @Nullable ParticleType<SlashParticleOptions> slashParticle() {
-                return null;
-            }
-
-            @Override
-            public @Nullable SoundEvent slashSound() {
-                return null;
-            }
         };
 
         public static final Codec<WeaponType> CODEC = StringRepresentable.fromEnum(WeaponType::values);
@@ -298,6 +242,12 @@ public final class WeaponTypes {
         public static final StreamCodec<ByteBuf, WeaponType> STREAM_CODEC = ByteBufCodecs.idMapper(
                 ByIdMap.continuous(WeaponType::ordinal, values(), ByIdMap.OutOfBoundsStrategy.ZERO),
                 WeaponType::ordinal);
+
+        public final SwingEffects swingEffects;
+
+        private WeaponType(final SwingEffects swingEffects) {
+            this.swingEffects = swingEffects;
+        }
 
         /**
          * Handles logic for if the player should critically hit this frame.
@@ -309,16 +259,6 @@ public final class WeaponTypes {
         public abstract boolean shouldCrit(final Player player, final Entity target);
 
         /**
-         * @return The particle to show when slashing a weapon of this type
-         */
-        public abstract @Nullable ParticleType<SlashParticleOptions> slashParticle();
-
-        /**
-         * @return The sound to play when slashing a weapon of this type
-         */
-        public abstract @Nullable SoundEvent slashSound();
-
-        /**
          * @return True if the given item is mapped to this WeaponType, false otherwise.
          */
         public boolean contains(final ItemLike item) {
@@ -328,6 +268,12 @@ public final class WeaponTypes {
         @Override
         public String getSerializedName() {
             return name().toLowerCase(Locale.ROOT);
+        }
+
+        public static record SwingEffects(
+                @Nullable Supplier<ParticleType<SlashParticleOptions>> slashParticle,
+                @Nullable SoundOptions attackSound,
+                @Nullable SoundOptions hitSound) {
         }
     }
 }

@@ -1,14 +1,30 @@
 {
-  "light_slash": {
-    "subtitle": "subtitles.critical_combat.light_slash",
-    "sounds": [
-      "minecraft:entity/player/attack/sweep1",
-      "minecraft:entity/player/attack/sweep2",
-      "minecraft:entity/player/attack/sweep3",
-      "minecraft:entity/player/attack/sweep4",
-      "minecraft:entity/player/attack/sweep5",
-      "minecraft:entity/player/attack/sweep6",
-      "minecraft:entity/player/attack/sweep7"
-    ]
-  }
+    "light_attack": {
+        "subtitle": "subtitles.critical_combat.light_attack",
+        "sounds": [
+            "minecraft:entity/player/attack/sweep1",
+            "minecraft:entity/player/attack/sweep2",
+            "minecraft:entity/player/attack/sweep3",
+            "minecraft:entity/player/attack/sweep4",
+            "minecraft:entity/player/attack/sweep5",
+            "minecraft:entity/player/attack/sweep6",
+            "minecraft:entity/player/attack/sweep7"
+        ]
+    },
+    "polearm_attack": {
+        "subtitle": "subtitles.critical_combat.polearm_attack",
+        "sounds": [
+            "minecraft:item/spear/attack1",
+            "minecraft:item/spear/attack2",
+            "minecraft:item/spear/attack3"
+        ]
+    },
+    "polearm_hit": {
+        "subtitle": "subtitles.critical_combat.polearm_hit",
+        "sounds": [
+            "minecraft:item/spear/hit1",
+            "minecraft:item/spear/hit2",
+            "minecraft:item/spear/hit3"
+        ]
+    }
 }

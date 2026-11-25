@@ -13,7 +13,7 @@ import net.minecraft.world.item.Rarity;
 /**
  * Items registry for {@link CriticalCombat}
  */
-public final class CC$Items {
+public final class CCItems {
 
     public static final RegistryProvider<Item> ITEMS = Platform.get()
             .openRegistry(() -> BuiltInRegistries.ITEM);
@@ -32,6 +32,6 @@ public final class CC$Items {
                         .createAttributes(2.5f, -1.8f))));
     }
 
-    private CC$Items() {
+    private CCItems() {
     }
 }

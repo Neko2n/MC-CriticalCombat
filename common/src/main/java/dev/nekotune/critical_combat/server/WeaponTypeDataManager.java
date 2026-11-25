@@ -19,7 +19,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import dev.nekotune.critical_combat.CC$Config;
+import dev.nekotune.critical_combat.CCConfig;
 import dev.nekotune.critical_combat.CriticalCombat;
 import dev.nekotune.critical_combat.platform.Platform;
 import dev.nekotune.critical_combat.shared.WeaponTypes;
@@ -63,7 +63,7 @@ public final class WeaponTypeDataManager extends SimplePreparableReloadListener<
             .fromNamespaceAndPath(CriticalCombat.MOD_ID, "weapon_overrides.json");
 
     private static Map<Item, WeaponType> defaultMappings() {
-        if (!CC$Config.PROCEDURAL_WEAPON_TYPES.get())
+        if (!CCConfig.PROCEDURAL_WEAPON_TYPES.get())
             return Map.of();
         final HashMap<Item, WeaponType> mappings = new HashMap<>();
         for (final Item item : BuiltInRegistries.ITEM) {

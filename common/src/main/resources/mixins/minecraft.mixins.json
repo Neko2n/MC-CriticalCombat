@@ -12,9 +12,11 @@
     "shared.DiggerItemMixin"
   ],
   "client": [
+    "client.MinecraftMixin",
     "client.GuiAccessor",
     "client.GuiMixin",
-    "client.PlayerMixin"
+    "client.PlayerMixin",
+    "client.ItemInHandRendererMixin"
   ],
   "server": [],
   "injectors": {

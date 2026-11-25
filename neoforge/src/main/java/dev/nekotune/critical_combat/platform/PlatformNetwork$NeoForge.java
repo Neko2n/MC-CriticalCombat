@@ -2,6 +2,7 @@ package dev.nekotune.critical_combat.platform;
 
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -14,6 +15,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload.Type;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -39,14 +41,37 @@ public class PlatformNetwork$NeoForge implements PlatformNetwork {
     }
 
     @Override
+    public void sendToServer(final CustomPacketPayload payload) {
+        PacketDistributor.sendToServer(payload);
+    }
+
+    @Override
+    public void sendToClientsTrackingEntity(final Entity entity, final CustomPacketPayload payload) {
+        PacketDistributor.sendToPlayersTrackingEntity(entity, payload);
+    }
+
+    @Override
     public <T extends CustomPacketPayload> void register$S2C(final Type<T> type,
-            final StreamCodec<? super RegistryFriendlyByteBuf, T> codec, final Consumer<T> handler) {
+            final StreamCodec<? super RegistryFriendlyByteBuf, T> codec,
+            final Consumer<T> handler) {
         if (registrar == null) {
             deferred.push(() -> this.register$S2C(type, codec, handler));
             return;
         }
         registrar.playToClient(type, codec,
                 (payload, context) -> handler.accept(payload));
+    }
+
+    @Override
+    public <T extends CustomPacketPayload> void register$C2S(final Type<T> type,
+            final StreamCodec<? super RegistryFriendlyByteBuf, T> codec,
+            final BiConsumer<T, ServerPlayer> handler) {
+        if (registrar == null) {
+            deferred.push(() -> this.register$C2S(type, codec, handler));
+            return;
+        }
+        registrar.playToServer(type, codec,
+                (payload, context) -> handler.accept(payload, (ServerPlayer) context.player()));
     }
 
     @SubscribeEvent

@@ -2,10 +2,10 @@ package dev.nekotune.critical_combat.client;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+
 import dev.nekotune.critical_combat.client.definition.SlashParticle;
 import dev.nekotune.critical_combat.platform.client.ClientPlatform;
-import dev.nekotune.critical_combat.shared.WeaponTypes;
-import dev.nekotune.critical_combat.shared.registry.CC$ParticleTypes;
+import dev.nekotune.critical_combat.shared.registry.CCParticleTypes;
 
 public final class CriticalCombatClient {
 
@@ -17,12 +17,12 @@ public final class CriticalCombatClient {
 
     public static void init() {
 
-        // Register client network payload receivers
-        WeaponTypes.registerPayload();
+        // Register client network payload handlers
+        ClientNetworkHandler.registerPayloadHandlers();
 
         // Register particle providers
         ClientPlatform.get().events().onRegisterParticleProvidersEvent().subscribe(payload -> {
-            payload.register(CC$ParticleTypes.LIGHT_SLASH.get(),
+            payload.register(CCParticleTypes.LIGHT_SLASH.get(),
                     sprites -> new SlashParticle.Provider(sprites, 0.4f, 4));
         });
 

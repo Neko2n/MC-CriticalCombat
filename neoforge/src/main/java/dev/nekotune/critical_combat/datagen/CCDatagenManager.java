@@ -14,7 +14,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
  * Data Generator for {@link CriticalCombat}
  */
 @EventBusSubscriber
-public final class CC$DatagenManager {
+public final class CCDatagenManager {
 
     @SubscribeEvent
     public static void onGatherData(final GatherDataEvent event) {
@@ -28,6 +28,6 @@ public final class CC$DatagenManager {
             generator.generateClientResources().forEach(event::addProvider);
     }
 
-    private CC$DatagenManager() {
+    private CCDatagenManager() {
     }
 }

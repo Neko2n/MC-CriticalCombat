@@ -8,6 +8,9 @@ import dev.nekotune.critical_combat.shared.WeaponTypes;
 public interface CriticalCombatServer {
 
     public static void init() {
+        
+        // Register server network payload receivers
+        ServerNetworkHandler.registerPayloadHandlers();
 
         // Hook up server-to-client replication of weapon type mappings
         Platform.get().events().onDatapackSyncEvent().subscribe(payload -> {

@@ -14,7 +14,7 @@ public class CriticalCombat$Fabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        NeoForgeConfigRegistry.INSTANCE.register(CriticalCombat.MOD_ID, ModConfig.Type.COMMON, CC$Config.SPEC);
+        NeoForgeConfigRegistry.INSTANCE.register(CriticalCombat.MOD_ID, ModConfig.Type.COMMON, CCConfig.SPEC);
         CriticalCombat.init();
     }
 }

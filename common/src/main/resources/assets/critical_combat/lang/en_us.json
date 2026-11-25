@@ -2,7 +2,9 @@
     "item.critical_combat.dagger": "Dagger",
     "item.critical_combat.black_shard": "Black Shard",
 
-    "subtitles.critical_combat.light_slash": "Light weapon slashes",
+    "subtitles.critical_combat.light_attack": "Light weapon slashes",
+    "subtitles.critical_combat.polearm_attack": "Spear jabs",
+    "subtitles.critical_combat.polearm_hit": "Spear hits",
 
     "critical_combat.configuration.title": "Critical Combat Configuration",
     "critical_combat.configuration.section.critical.combat.common.toml": "Common Settings",
@@ -33,5 +35,14 @@
     "config.critical_combat.heat_resets_on_hurt.tooltip": "Should heat (% of total damage dealt with LIGHT-type weapons) reset when you take damage.",
 
     "config.critical_combat.combat_wear_cooldown": "Durability Loss Cooldown",
-    "config.critical_combat.combat_wear_cooldown.tooltip": "The number of seconds after attacking for which durability loss from attacks should be disabled. Helps keep LIGHT-type weapons from melting apart."
+    "config.critical_combat.combat_wear_cooldown.tooltip": "The number of seconds after attacking for which durability loss from attacks should be disabled. Helps keep LIGHT-type weapons from melting apart.",
+
+    "config.critical_combat.can_attack_on_cooldown": "Can Attack During Cooldown",
+    "config.critical_combat.can_attack_on_cooldown.tooltip": "Whether you can attack during your attack cooldown. In vanilla, this is true.",
+
+    "config.critical_combat.swing_sounds": "Swing Sounds Enabled",
+    "config.critical_combat.swing_sounds.tooltip": "Whether sounds should play when swinging weapons.",
+
+    "config.critical_combat.swing_particles": "Swing Particles Enabled",
+    "config.critical_combat.swing_particles.tooltip": "Whether swinging weapons should spawn particles."
 }
