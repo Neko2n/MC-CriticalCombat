@@ -14,7 +14,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
-public final class CCCommands {
+public final class CC$Commands {
 
     public static final Command<CommandSourceStack> CMD_LOG_HELD_WEAPON_TYPE = new Command<>() {
         @Override
@@ -36,6 +36,6 @@ public final class CCCommands {
         dispatcher.register(builder);
     }
 
-    private CCCommands() {
+    private CC$Commands() {
     }
 }

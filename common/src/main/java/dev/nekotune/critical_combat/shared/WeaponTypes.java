@@ -8,16 +8,16 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.mojang.serialization.Codec;
 
-import dev.nekotune.critical_combat.CCConfig;
+import dev.nekotune.critical_combat.CC$Config;
 import dev.nekotune.critical_combat.CriticalCombat;
 import dev.nekotune.critical_combat.client.CriticalCombatClient;
 import dev.nekotune.critical_combat.platform.Platform;
 import dev.nekotune.critical_combat.platform.Platform.IPlatformHelper.Environment;
 import dev.nekotune.critical_combat.server.CriticalCombatServer;
-import dev.nekotune.critical_combat.shared.CCPlayerExtension.CameraTracker;
+import dev.nekotune.critical_combat.shared.CC$Player_.CameraTracker;
 import dev.nekotune.critical_combat.shared.definition.SlashParticleOptions;
-import dev.nekotune.critical_combat.shared.registry.CCParticleTypes;
-import dev.nekotune.critical_combat.shared.registry.CCSoundEvents;
+import dev.nekotune.critical_combat.shared.registry.CC$ParticleTypes;
+import dev.nekotune.critical_combat.shared.registry.CC$SoundEvents;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
@@ -214,12 +214,12 @@ public final class WeaponTypes {
 
             @Override
             public @Nullable ParticleType<SlashParticleOptions> slashParticle() {
-                return CCParticleTypes.LIGHT_SLASH.get();
+                return CC$ParticleTypes.LIGHT_SLASH.get();
             }
 
             @Override
             public @Nullable SoundEvent slashSound() {
-                return CCSoundEvents.LIGHT_SLASH.get();
+                return CC$SoundEvents.LIGHT_SLASH.get();
             }
         },
 
@@ -233,7 +233,7 @@ public final class WeaponTypes {
 
             @Override
             public boolean shouldCrit(final Player player, final Entity target) {
-                final CameraTracker cameraTracker = CCPlayerExtension.get(player).cameraTracker;
+                final CameraTracker cameraTracker = CC$Player_.get(player).cameraTracker;
                 final Vec3 movement = player.getKnownMovement();
                 final float yawRad = player.getYRot() * Mth.DEG_TO_RAD;
                 final Vec3 right = new Vec3(-Mth.cos(yawRad), 0, -Mth.sin(yawRad));
@@ -249,7 +249,7 @@ public final class WeaponTypes {
                         && !player.hasEffect(MobEffects.BLINDNESS)
                         && !player.isPassenger()
                         && target instanceof LivingEntity
-                        && bladeMotion.length() > CCConfig.BLADE_CRIT_SPEED.get();
+                        && bladeMotion.length() > CC$Config.BLADE_CRIT_SPEED.get();
             }
 
             @Override

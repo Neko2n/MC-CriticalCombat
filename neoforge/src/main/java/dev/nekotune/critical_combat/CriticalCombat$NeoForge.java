@@ -15,7 +15,7 @@ public class CriticalCombat$NeoForge {
     }
 
     public CriticalCombat$NeoForge(final IEventBus eventBus, final ModContainer container) {
-        container.registerConfig(ModConfig.Type.COMMON, CCConfig.SPEC);
+        container.registerConfig(ModConfig.Type.COMMON, CC$Config.SPEC);
         CriticalCombat.init();
     }
 }

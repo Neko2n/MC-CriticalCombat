@@ -8,7 +8,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import dev.nekotune.critical_combat.CCConfig;
+import dev.nekotune.critical_combat.CC$Config;
 import dev.nekotune.critical_combat.mixin.MixinExtension;
 import dev.nekotune.critical_combat.mixin.minecraft.shared.LivingEntityMixin;
 import dev.nekotune.critical_combat.mixin.minecraft.shared.PlayerMixin;
@@ -36,17 +36,17 @@ import net.minecraft.world.phys.Vec3;
  * @see PlayerMixin
  */
 @ParametersAreNonnullByDefault
-public final class CCPlayerExtension {
+public final class CC$Player_ {
 
     /**
      * Returns the extension associated with the given player.
      * 
      * @param player The player to get the extension for
-     * @return CCPlayerExtension object for the given player
+     * @return CC$Player extension for the given player
      */
     @SuppressWarnings("unchecked")
-    public static CCPlayerExtension get(final Player player) {
-        return ((MixinExtension<CCPlayerExtension>) player).critical_combat$getExtension();
+    public static CC$Player_ get(final Player player) {
+        return ((MixinExtension<CC$Player_>) player).critical_combat$getExtension();
     }
 
     public final Player player;
@@ -56,7 +56,7 @@ public final class CCPlayerExtension {
     private int combatWearCooldownTicks = 0;
     private int slashFXCooldownTicks = 0;
 
-    public CCPlayerExtension(final Player player) {
+    public CC$Player_(final Player player) {
         this.player = player;
         this.cameraTracker = new CameraTracker(player);
     }
@@ -68,7 +68,7 @@ public final class CCPlayerExtension {
         this.cameraTracker.tick();
 
         // Drain attack heat passively over time
-        final float heatLoss = CCConfig.HEAT_DRAIN.get().floatValue() / SharedConstants.TICKS_PER_SECOND;
+        final float heatLoss = CC$Config.HEAT_DRAIN.get().floatValue() / SharedConstants.TICKS_PER_SECOND;
         this.attackHeat = Math.clamp(this.attackHeat - heatLoss, 0f, 1f);
 
         this.combatWearCooldownTicks = Math.max(this.combatWearCooldownTicks - 1, 0);
@@ -87,7 +87,7 @@ public final class CCPlayerExtension {
             if (target instanceof LivingEntity) {
                 final @Nullable WeaponType heldWeaponType = WeaponTypes.get(this.player.getWeaponItem().getItem());
                 if (heldWeaponType == WeaponType.LIGHT) {
-                    float heatGain = CCConfig.HEAT_PER_HIT.get().floatValue();
+                    float heatGain = CC$Config.HEAT_PER_HIT.get().floatValue();
                     if (heldWeaponType.shouldCrit(this.player, target))
                         heatGain *= 2f;
                     this.attackHeat = Math.clamp(this.attackHeat + heatGain, 0f, 1f);
@@ -102,7 +102,7 @@ public final class CCPlayerExtension {
     public void hurt(final DamageSource source, final float amount,
             final CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValue()) {
-            if (CCConfig.HEAT_RESETS_ON_HURT.get())
+            if (CC$Config.HEAT_RESETS_ON_HURT.get())
                 this.attackHeat = 0f;
         }
     }
@@ -182,7 +182,7 @@ public final class CCPlayerExtension {
 
     /**
      * @return True if items should be able to take durability damage from attacking
-     *         enemies (if {@link CCPlayerExtension#combatWearCooldownTicks} == 0)
+     *         enemies (if {@link CC$Player_#combatWearCooldownTicks} == 0)
      */
     public boolean shouldApplyCombatWear() {
         return this.combatWearCooldownTicks == 0;

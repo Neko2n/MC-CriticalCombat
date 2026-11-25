@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import dev.nekotune.critical_combat.CCConfig;
-import dev.nekotune.critical_combat.shared.CCPlayerExtension;
+import dev.nekotune.critical_combat.CC$Config;
+import dev.nekotune.critical_combat.shared.CC$Player_;
 import dev.nekotune.critical_combat.shared.WeaponTypes;
 import dev.nekotune.critical_combat.shared.WeaponTypes.WeaponType;
 import net.minecraft.server.level.ServerLevel;
@@ -30,7 +30,7 @@ public abstract class LivingEntityMixin {
     private void critical_combat$hookSwing(final InteractionHand hand, final CallbackInfo ci) {
         if (((Object) this) instanceof final Player player) {
             if (player.level() instanceof ServerLevel || player.isLocalPlayer())
-                CCPlayerExtension.get(player).swing(hand, ci);
+                CC$Player_.get(player).swing(hand, ci);
         }
     }
 
@@ -45,7 +45,7 @@ public abstract class LivingEntityMixin {
         if (attacker instanceof final Player player) {
             final @Nullable WeaponType heldWeaponType = WeaponTypes.get(player.getWeaponItem().getItem());
             if (heldWeaponType == WeaponType.LIGHT) {
-                final CCPlayerExtension ext = CCPlayerExtension.get(player);
+                final CC$Player_ ext = CC$Player_.get(player);
                 final float maxKbModifier = heldWeaponType.shouldCrit(player, livingEntity) ? 1.5f : 1f;
                 final float kbModifier = Mth.map(ext.getHeat(), 0f, 1f, 0.5f, maxKbModifier);
                 cir.setReturnValue(cir.getReturnValue() * kbModifier);
@@ -65,8 +65,8 @@ public abstract class LivingEntityMixin {
             if (weaponItem != null) {
                 final WeaponType heldWeaponType = WeaponTypes.get(weaponItem.getItem());
                 if (heldWeaponType == WeaponType.LIGHT) {
-                    final CCPlayerExtension ext = CCPlayerExtension.get(player);
-                    final float minDmgScale = CCConfig.HEAT_DAMAGE_SCALE.get().floatValue();
+                    final CC$Player_ ext = CC$Player_.get(player);
+                    final float minDmgScale = CC$Config.HEAT_DAMAGE_SCALE.get().floatValue();
                     return amount * Mth.map(ext.getHeat(), 0f, 1f, minDmgScale, 1f);
                 }
             }

@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import dev.nekotune.critical_combat.CCConfig;
-import dev.nekotune.critical_combat.shared.CCPlayerExtension;
+import dev.nekotune.critical_combat.CC$Config;
+import dev.nekotune.critical_combat.shared.CC$Player_;
 import dev.nekotune.critical_combat.shared.WeaponTypes;
 import dev.nekotune.critical_combat.shared.WeaponTypes.WeaponType;
 import net.minecraft.SharedConstants;
@@ -53,9 +53,9 @@ public abstract class ItemStackMixin {
         final ItemStack stack = (ItemStack) (Object) this;
         final @Nullable Player attacker = this.critical_combat$postHurtAttacker;
         if (attacker != null && damage > 0 && stack.isDamageableItem()) {
-            final CCPlayerExtension ext = CCPlayerExtension.get(attacker);
+            final CC$Player_ ext = CC$Player_.get(attacker);
             if (ext.shouldApplyCombatWear()) {
-                final double baseCooldownSecs = CCConfig.COMBAT_WEAR_COOLDOWN.get();
+                final double baseCooldownSecs = CC$Config.COMBAT_WEAR_COOLDOWN.get();
                 final double attackSpeed = attacker.getAttributeValue(Attributes.ATTACK_SPEED);
                 double cooldownSecs = baseCooldownSecs / 2D;
                 cooldownSecs = Math.min(baseCooldownSecs, cooldownSecs * attackSpeed);

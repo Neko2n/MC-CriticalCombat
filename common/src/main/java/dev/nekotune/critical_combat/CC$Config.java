@@ -2,7 +2,7 @@ package dev.nekotune.critical_combat;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-public class CCConfig {
+public class CC$Config {
 
     /** Registered as {@code ModConfig.Type.COMMON} */
     public static final ModConfigSpec SPEC;

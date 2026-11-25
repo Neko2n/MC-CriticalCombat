@@ -25,7 +25,7 @@ public final class CriticalCombat {
         CriticalCombatServer.init();
 
         Platform.get().events().onRegisterCommandsEvent().subscribe(payload -> {
-            CCCommands.register(payload.dispatcher(), payload.context());
+            CC$Commands.register(payload.dispatcher(), payload.context());
         });
 
         MOD_LOADED.complete(null);

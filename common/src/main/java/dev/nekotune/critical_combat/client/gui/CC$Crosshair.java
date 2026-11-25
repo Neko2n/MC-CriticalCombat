@@ -12,7 +12,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.nekotune.critical_combat.CriticalCombat;
 import dev.nekotune.critical_combat.mixin.minecraft.client.GuiAccessor;
-import dev.nekotune.critical_combat.shared.CCPlayerExtension;
+import dev.nekotune.critical_combat.shared.CC$Player_;
 import dev.nekotune.critical_combat.shared.WeaponTypes;
 import dev.nekotune.critical_combat.shared.WeaponTypes.WeaponType;
 import net.minecraft.SharedConstants;
@@ -30,15 +30,15 @@ import net.minecraft.world.level.GameType;
 /**
  * Custom crosshair override for {@link CriticalCombat}
  * 
- * @see CCGuiExtension
+ * @see CC$Gui_
  */
-public class CCCrosshair {
+public class CC$Crosshair {
 
     protected final Minecraft minecraft;
     protected final Gui gui;
     protected float flashIntensity = 0f;
 
-    public CCCrosshair(final Minecraft minecraft, final Gui gui) {
+    public CC$Crosshair(final Minecraft minecraft, final Gui gui) {
         this.minecraft = minecraft;
         this.gui = gui;
     }
@@ -139,7 +139,7 @@ public class CCCrosshair {
 
         final float deltaTime = deltaTracker.getRealtimeDeltaTicks() / SharedConstants.TICKS_PER_SECOND;
         final LocalPlayer localPlayer = Objects.requireNonNull(this.minecraft.player);
-        final CCPlayerExtension ext = CCPlayerExtension.get(localPlayer);
+        final CC$Player_ ext = CC$Player_.get(localPlayer);
         final float attackStrengthScale = localPlayer.getAttackStrengthScale(0.0F);
         final @Nullable WeaponType heldWeaponType = WeaponTypes.get(localPlayer.getWeaponItem().getItem());
         final boolean holdingLightWeapon = heldWeaponType == WeaponType.LIGHT;

@@ -5,7 +5,7 @@ import java.util.concurrent.CompletionStage;
 import dev.nekotune.critical_combat.client.definition.SlashParticle;
 import dev.nekotune.critical_combat.platform.client.ClientPlatform;
 import dev.nekotune.critical_combat.shared.WeaponTypes;
-import dev.nekotune.critical_combat.shared.registry.CCParticleTypes;
+import dev.nekotune.critical_combat.shared.registry.CC$ParticleTypes;
 
 public final class CriticalCombatClient {
 
@@ -22,7 +22,7 @@ public final class CriticalCombatClient {
 
         // Register particle providers
         ClientPlatform.get().events().onRegisterParticleProvidersEvent().subscribe(payload -> {
-            payload.register(CCParticleTypes.LIGHT_SLASH.get(),
+            payload.register(CC$ParticleTypes.LIGHT_SLASH.get(),
                     sprites -> new SlashParticle.Provider(sprites, 0.4f, 4));
         });
 

@@ -11,7 +11,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import dev.nekotune.critical_combat.CriticalCombat;
 import dev.nekotune.critical_combat.datagen.DataGenerator;
 import dev.nekotune.critical_combat.shared.definition.DaggerItem;
-import dev.nekotune.critical_combat.shared.registry.CCItems;
+import dev.nekotune.critical_combat.shared.registry.CC$Items;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorItem;
@@ -26,7 +26,7 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
  * Automatically defines models for items.
  */
 @ParametersAreNonnullByDefault
-public final class CCItemModelProvider extends ItemModelProvider {
+public final class CC$ItemModelProvider extends ItemModelProvider {
 
     /**
      * Keeps track of which items have already been manually given an
@@ -34,7 +34,7 @@ public final class CCItemModelProvider extends ItemModelProvider {
      */
     private final Set<ResourceLocation> registered = new HashSet<>();
 
-    public CCItemModelProvider(final DataGenerator generator) {
+    public CC$ItemModelProvider(final DataGenerator generator) {
         super(generator.packOutput(), CriticalCombat.MOD_ID, generator.existingFileHelper());
     }
 
@@ -51,7 +51,7 @@ public final class CCItemModelProvider extends ItemModelProvider {
 
         // Any items which didn't get an explicit model are given a generic flat model.
         // Block items are skipped, as they're given models by BlockStateProvider.
-        final Stream<Item> items = CCItems.ITEMS.entries().stream().map(Supplier::get);
+        final Stream<Item> items = CC$Items.ITEMS.entries().stream().map(Supplier::get);
         items.forEach((final Item item) -> {
             if (item instanceof BlockItem)
                 return;

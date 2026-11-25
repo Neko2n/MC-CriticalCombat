@@ -10,31 +10,33 @@ import net.minecraft.client.gui.Gui;
  * 
  * @see GuiMixin
  */
-public final class CCGuiExtension {
-
-    public final Minecraft minecraft;
-
-    /**
-     * Custom crosshair
-     */
-    public final CCCrosshair crosshair;
+public final class CC$Gui_ {
 
     /**
      * Returns the extension associated with the given GUI.
      * 
      * @param gui The GUI to get the extension for
-     * @return CCGuiExtension object for the given GUI
+     * @return CC$Gui extension for the given GUI
      */
     @SuppressWarnings("unchecked")
-    public static CCGuiExtension get(final Gui gui) {
-        return ((MixinExtension<CCGuiExtension>) gui).critical_combat$getExtension();
+    public static CC$Gui_ get(final Gui gui) {
+        return ((MixinExtension<CC$Gui_>) gui).critical_combat$getExtension();
     }
+
+    public final Minecraft minecraft;
+    public final Gui gui;
+
+    /**
+     * Custom crosshair
+     */
+    public final CC$Crosshair crosshair;
 
     /**
      * @see GuiMixin#critical_combat$initGuiExtension
      */
-    public CCGuiExtension(final Minecraft minecraft, final Gui gui) {
+    public CC$Gui_(final Minecraft minecraft, final Gui gui) {
         this.minecraft = minecraft;
-        this.crosshair = new CCCrosshair(minecraft, gui);
+        this.gui = gui;
+        this.crosshair = new CC$Crosshair(minecraft, gui);
     }
 }

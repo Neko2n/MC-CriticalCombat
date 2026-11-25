@@ -12,7 +12,7 @@ import net.minecraft.sounds.SoundEvent;
 /**
  * Sounds registry for {@link CriticalCombat}
  */
-public interface CCSoundEvents {
+public interface CC$SoundEvents {
 
     public static final RegistryProvider<SoundEvent> SOUND_EVENTS = Platform.get()
             .openRegistry(() -> BuiltInRegistries.SOUND_EVENT);
