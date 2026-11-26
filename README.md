@@ -6,8 +6,7 @@ A multiloader (Fabric + NeoForge) Minecraft mod that brings variety to vanilla's
 
 Critical Combat is **All Rights Reserved**, with some exceptions. See [LICENSE](LICENSE) for the full terms.
 
-- **Modpacks:** You may include the unmodified mod in modpacks, for both commercial and non-commercial purposes.
-- **Derivative works:** You may modify the mod and share your changes for non-commercial purposes, but not on Modrinth or CurseForge. Sending files directly to people or hosting them in a git repository is fine.
+I'll generally allow derivative works (ports, modified jars for modpacks, etc.) if you just ask for and receive explicit permission. Contact me on Discord @<code>nekotune</code> or through email <code>nekotune2n@gmail.com</code>
 
 ## Overview
 
