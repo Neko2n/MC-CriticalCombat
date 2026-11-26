@@ -45,34 +45,38 @@ public class SlashParticle extends TextureSheetParticle {
         } else {
             this.offsetX = this.offsetY = this.offsetZ = 0D;
         }
-        this.oRoll = options.roll() * Mth.DEG_TO_RAD;
-        this.roll = this.oRoll;
+        this.oRoll = this.roll = 0f;
         this.lifetime = lifetime;
         this.quadSize = size * this.options.scale();
         this.hasPhysics = false;
         this.setSpriteFromAge(sprites);
     }
 
-    private float yaw() {
+    protected float globalYaw() {
         return (float) Math.PI - this.options.yaw() * Mth.DEG_TO_RAD;
     }
 
-    private float pitch() {
-        return -this.options.pitch() * Mth.DEG_TO_RAD;
+    protected float globalPitch() {
+        return -1f * Mth.wrapDegrees(this.options.pitch() + 90f) * Mth.DEG_TO_RAD;
+    }
+
+    protected float globalRoll() {
+        return options.roll() * Mth.DEG_TO_RAD;
     }
 
     @Override
     public FacingCameraMode getFacingCameraMode() {
-        return (quaternion, camera, partialTicks) -> quaternion.rotationYXZ(this.yaw(), this.pitch(), 0f);
+        return (quaternion, camera, partialTicks) -> quaternion
+                .rotationYXZ(this.globalYaw(), this.globalPitch(), 0f)
+                .rotateY(this.globalRoll());
     }
 
     @Override
-    public void render(final VertexConsumer buffer, final Camera camera,
-            final float partialTicks) {
+    public void render(final VertexConsumer buffer, final Camera camera, final float partialTicks) {
         super.render(buffer, camera, partialTicks);
         final Quaternionf back = new Quaternionf();
         this.getFacingCameraMode().setRotation(back, camera, partialTicks);
-        back.rotateY((float) Math.PI).rotateZ(-Mth.lerp(partialTicks, this.oRoll, this.roll));
+        back.rotateY((float) Math.PI);
         this.renderRotatedQuad(buffer, camera, back, partialTicks);
     }
 
@@ -112,7 +116,7 @@ public class SlashParticle extends TextureSheetParticle {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    public record Provider(SpriteSet sprites, float size, int lifetime)
+    public static record Provider(SpriteSet sprites, float size, int lifetime)
             implements ParticleProvider<SlashParticleOptions> {
         @Override
         public Particle createParticle(final SlashParticleOptions options, final ClientLevel level,

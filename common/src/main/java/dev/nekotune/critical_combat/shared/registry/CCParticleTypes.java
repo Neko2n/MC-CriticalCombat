@@ -17,7 +17,15 @@ public interface CCParticleTypes {
     public static final RegistryProvider<ParticleType<?>> PARTICLE_TYPES = Platform.get()
             .openRegistry(() -> BuiltInRegistries.PARTICLE_TYPE);
 
-    /** Slash particles for LIGHT-type weapons */
-    public static final Supplier<ParticleType<SlashParticleOptions>> LIGHT_SLASH = PARTICLE_TYPES
-            .define("light_slash", SlashParticleOptions.Type::new);
+    /** Swing particle for LIGHT-type weapons */
+    public static final Supplier<ParticleType<SlashParticleOptions>> LIGHT_SWING = PARTICLE_TYPES
+            .define("light_swing", SlashParticleOptions.Type::new);
+
+    /** Swing particle for BLADE-type weapons */
+    public static final Supplier<ParticleType<SlashParticleOptions>> BLADE_SWING = PARTICLE_TYPES
+            .define("blade_swing", SlashParticleOptions.Type::new);
+
+    /** Swing particle for POLEARM-type weapons */
+    public static final Supplier<ParticleType<SlashParticleOptions>> POLEARM_SWING = PARTICLE_TYPES
+            .define("polearm_swing", SlashParticleOptions.Type::new);
 }

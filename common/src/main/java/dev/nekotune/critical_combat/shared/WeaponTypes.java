@@ -162,7 +162,7 @@ public final class WeaponTypes {
          * Typically for knives.
          */
         LIGHT(new SwingEffects(
-                CCParticleTypes.LIGHT_SLASH,
+                CCParticleTypes.LIGHT_SWING,
                 new SoundOptions(CCSoundEvents.LIGHT_ATTACK, 0.25f, 1.4f, 0.1f),
                 null)) { // TODO cut sound for light weapons
 
@@ -188,8 +188,8 @@ public final class WeaponTypes {
          * Typically for swords.
          */
         BLADE(new SwingEffects(
-                null, // TODO slash particle for blades
-                null, // TODO slash sound for blades
+                CCParticleTypes.BLADE_SWING,
+                new SoundOptions(CCSoundEvents.BLADE_ATTACK, 0.25f, 1f, 0.1f),
                 null)) {  // TODO cut sound for blades
 
             @Override
@@ -220,7 +220,7 @@ public final class WeaponTypes {
          * Typically for spear-like weapons.
          */
         POLEARM(new SwingEffects(
-                null, // TODO stab particle for polearms
+                CCParticleTypes.POLEARM_SWING,
                 new SoundOptions(CCSoundEvents.POLEARM_ATTACK, 1f, 1f, 0.1f),
                 new SoundOptions(CCSoundEvents.POLEARM_HIT, 1f, 1f, 0.1f))) {
 

@@ -20,7 +20,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -60,12 +59,10 @@ public interface SwingEffects {
         final @Nullable Supplier<ParticleType<SlashParticleOptions>> particleType = weaponType.swingEffects
                 .slashParticle();
         if (particleType != null && CCConfig.SWING_PARTICLES.get()) {
-            final float pitch = Mth.wrapDegrees(entity.getXRot() + 90f);
             final float yaw = entity.getYRot();
-            final float roll = (float) level.getRandom().triangle(0D, 10D);
-            final float scale = (float) level.getRandom().triangle(1D, 0.1D);
+            final float pitch = entity.getXRot();
             final var particleOptions = new SlashParticleOptions(particleType.get(),
-                    entity.getId(), flipped, yaw, pitch, roll, scale);
+                    entity.getId(), flipped, yaw, pitch, 0f, 1f);
             level.addParticle(particleOptions, x, y, z, 0D, 0D, 0D);
         }
 

@@ -20,6 +20,9 @@ public interface CCSoundEvents {
     /** Attack sound for LIGHT-type weapons */
     public static final Supplier<SoundEvent> LIGHT_ATTACK = define("light_attack");
 
+    /** Attack sound for BLADE-type weapons */
+    public static final Supplier<SoundEvent> BLADE_ATTACK = define("blade_attack");
+
     /** Attack sound for POLEARM-type weapons */
     public static final Supplier<SoundEvent> POLEARM_ATTACK = define("polearm_attack");
 

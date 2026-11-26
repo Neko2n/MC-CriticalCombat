@@ -11,6 +11,18 @@
             "minecraft:entity/player/attack/sweep7"
         ]
     },
+    "blade_attack": {
+        "subtitle": "subtitles.critical_combat.blade_attack",
+        "sounds": [
+            "minecraft:entity/player/attack/sweep1",
+            "minecraft:entity/player/attack/sweep2",
+            "minecraft:entity/player/attack/sweep3",
+            "minecraft:entity/player/attack/sweep4",
+            "minecraft:entity/player/attack/sweep5",
+            "minecraft:entity/player/attack/sweep6",
+            "minecraft:entity/player/attack/sweep7"
+        ]
+    },
     "polearm_attack": {
         "subtitle": "subtitles.critical_combat.polearm_attack",
         "sounds": [
