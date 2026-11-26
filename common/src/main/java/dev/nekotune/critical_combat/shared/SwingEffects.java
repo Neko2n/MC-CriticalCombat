@@ -20,7 +20,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -40,12 +39,9 @@ public interface SwingEffects {
         final Level level = entity.level();
 
         // On the server, just replicate to clients
-        if (level instanceof final ServerLevel serverLevel) {
+        if (level instanceof ServerLevel) {
             final var broadcast = new SwingFXBroadcastPayload(entity.getId(), weaponType);
-            for (final ServerPlayer other : serverLevel.players()) {
-                if (other != entity)
-                    Platform.get().network().sendToClientsTrackingEntity(entity, broadcast);
-            }
+            Platform.get().network().sendToClientsTrackingEntity(entity, broadcast);
             return;
         }
 
