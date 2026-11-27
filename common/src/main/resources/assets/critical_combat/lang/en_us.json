@@ -2,9 +2,12 @@
     "item.critical_combat.dagger": "Dagger",
     "item.critical_combat.black_shard": "Black Shard",
 
-    "subtitles.critical_combat.light_attack": "Light weapon slashes",
+    "subtitles.critical_combat.light_attack": "Knife slashes",
     "subtitles.critical_combat.polearm_attack": "Spear jabs",
     "subtitles.critical_combat.polearm_hit": "Spear hits",
+    "subtitles.critical_combat.blade_attack": "Sword slashes",
+    "subtitles.critical_combat.default_attack": "Weapon swings",
+    "subtitles.critical_combat.blade_block": "Sword blocks",
 
     "critical_combat.configuration.title": "Critical Combat Configuration",
     "critical_combat.configuration.section.critical.combat.common.toml": "Common Settings",
@@ -44,5 +47,23 @@
     "config.critical_combat.swing_sounds.tooltip": "Whether sounds should play when swinging weapons.",
 
     "config.critical_combat.swing_particles": "Swing Particles Enabled",
-    "config.critical_combat.swing_particles.tooltip": "Whether swinging weapons should spawn particles."
+    "config.critical_combat.swing_particles.tooltip": "Whether swinging weapons should spawn particles.",
+
+    "config.critical_combat.blade_block_enabled": "Blade Blocking Enabled",
+    "config.critical_combat.blade_block_enabled.tooltip": "Whether BLADE-type weapons (swords, etc.) can block attacks by holding right-click.",
+
+    "config.critical_combat.blade_weak_block": "Weak Blade Blocking",
+    "config.critical_combat.blade_weak_block.tooltip": "Whether blocking with BLADE-type weapons should be breakable by any hit. Setting this to false makes breaking block require an axe or a heavy weapon.",
+
+    "config.critical_combat.blade_block_timer": "Blade Block Duration",
+    "config.critical_combat.blade_block_timer.tooltip": "How many seconds you can hold block with a BLADE-type weapon before your block window closes.",
+
+    "config.critical_combat.shield_block_timer": "Shield Block Duration",
+    "config.critical_combat.shield_block_timer.tooltip": "How many seconds you can hold block with a shield before your block window closes. Set to 0 for no limit, like vanilla.",
+
+    "config.critical_combat.block_regen_timer": "Block Regeneration Time",
+    "config.critical_combat.block_regen_timer.tooltip": "How many seconds it takes for your block timer to fully refill after you stop blocking.",
+
+    "config.critical_combat.axes_disable_blocking": "Strong Axes",
+    "config.critical_combat.axes_disable_blocking.tooltip": "Whether axes should be able to break past shields/blades. If set to false, only HEAVY-type weapons can break past shields/blades."
 }

@@ -38,5 +38,24 @@
             "minecraft:item/spear/hit2",
             "minecraft:item/spear/hit3"
         ]
+    },
+    "default_attack": {
+        "subtitle": "subtitles.critical_combat.default_attack",
+        "sounds": [
+            "critical_combat:weapon/default/attack1",
+            "critical_combat:weapon/default/attack2",
+            "critical_combat:weapon/default/attack3",
+            "critical_combat:weapon/default/attack4"
+        ]
+    },
+    "blade_block": {
+        "subtitle": "subtitles.critical_combat.blade_block",
+        "sounds": [
+            "critical_combat:weapon/blade/block1",
+            "critical_combat:weapon/blade/block2",
+            "critical_combat:weapon/blade/block3",
+            "critical_combat:weapon/blade/block4",
+            "critical_combat:weapon/blade/block5"
+        ]
     }
 }

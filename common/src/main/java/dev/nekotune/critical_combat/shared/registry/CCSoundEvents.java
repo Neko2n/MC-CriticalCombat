@@ -17,11 +17,17 @@ public interface CCSoundEvents {
     public static final RegistryProvider<SoundEvent> SOUND_EVENTS = Platform.get()
             .openRegistry(() -> BuiltInRegistries.SOUND_EVENT);
 
+    /** Attack sound for DEFAULT-type weapons */
+    public static final Supplier<SoundEvent> DEFAULT_ATTACK = define("default_attack");
+
     /** Attack sound for LIGHT-type weapons */
     public static final Supplier<SoundEvent> LIGHT_ATTACK = define("light_attack");
 
     /** Attack sound for BLADE-type weapons */
     public static final Supplier<SoundEvent> BLADE_ATTACK = define("blade_attack");
+
+    /** Sound for when you block an attack with a BLADE-type weapon */
+    public static final Supplier<SoundEvent> BLADE_BLOCK = define("blade_block");
 
     /** Attack sound for POLEARM-type weapons */
     public static final Supplier<SoundEvent> POLEARM_ATTACK = define("polearm_attack");

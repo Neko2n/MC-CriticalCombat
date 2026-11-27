@@ -119,7 +119,7 @@ public final class WeaponTypes {
          */
         DEFAULT(new SwingEffects( // TODO default swing FX (downward slash, light swoosh, light crack on hit)
                 null,
-                null,
+                new SoundOptions(CCSoundEvents.DEFAULT_ATTACK, 0.25f, 0.8f, 0.1f),
                 null)) {
 
             @Override
