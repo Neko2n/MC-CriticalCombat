@@ -47,11 +47,12 @@ public final class CCPlayer_ {
     public final Player player;
     public final CameraTracker cameraTracker;
     public final SlashTracker slashTracker = new SlashTracker();
+    public final BlockTracker blockTracker = new BlockTracker();
     private float attackHeat = 0f;
     private int combatWearCooldownTicks = 0;
     private int swingFXCooldownTicks = 0;
-    public int swapTicks = 0;
     private ItemStack previousHeldItem = ItemStack.EMPTY;
+    public int swapTicks = 0;
 
     public CCPlayer_(final Player player) {
         this.player = player;
@@ -63,6 +64,7 @@ public final class CCPlayer_ {
      */
     public void tick(final CallbackInfo ci) {
         this.cameraTracker.tick();
+        this.blockTracker.tick(this);
 
         // Drain attack heat passively over time
         final float heatLoss = CCConfig.HEAT_DRAIN.get().floatValue() / SharedConstants.TICKS_PER_SECOND;
@@ -201,6 +203,9 @@ public final class CCPlayer_ {
         }
     }
 
+    /** 
+     * Tracks the player's slashing direction
+     */
     public static final class SlashTracker {
         private static final int RAPID_SWING_WINDOW_TICKS = 10;
 
@@ -215,6 +220,61 @@ public final class CCPlayer_ {
             this.isSlashFlipped = (now - this.lastSlashTick <= RAPID_SWING_WINDOW_TICKS)
                     && !this.isSlashFlipped();
             this.lastSlashTick = now;
+        }
+    }
+
+    /**
+     * Tracks information about the player's block (shielded state)
+     */
+    public static final class BlockTracker {
+        private int blockingTicks = 0;
+        private @Nullable ItemStack blockingItem = null;
+
+        public void tick(final CCPlayer_ ccplayer) {
+            final ItemStack heldItem = ccplayer.player.getMainHandItem();
+            if (ccplayer.player.isBlocking()) {
+                this.blockingTicks++;
+                this.blockingItem = heldItem;
+            } else {
+                final @Nullable ItemStack oBlockingItem = this.blockingItem;
+                if (oBlockingItem != null && this.isWeak()) {
+                    final double timer = CCConfig.BLOCK_REGEN_TIMER.get();
+                    final int cooldownTicks = Math.max(1, Mth.ceil(timer * SharedConstants.TICKS_PER_SECOND));
+                    ccplayer.player.getCooldowns().addCooldown(oBlockingItem.getItem(), cooldownTicks);
+                }
+                this.blockingTicks = 0;
+                this.blockingItem = null;
+            }
+        }
+
+        /**
+         * @return The number of ticks elapsed since the player began blocking, or 0 if
+         *         they are not blocking.
+         */
+        public int elapsed() {
+            return this.blockingTicks;
+        }
+
+        /**
+         * @return Whether the player's block is "weak" (should break when hit).
+         */
+        public boolean isWeak() {
+            return this.elapsed() >= this.maxTicks();
+        }
+
+        /**
+         * @return The maximum number of ticks the player can block for until their
+         *         block becomes "weak".
+         */
+        public int maxTicks() {
+            final @Nullable ItemStack blockingItem = this.blockingItem;
+            final @Nullable WeaponType heldWeaponType = blockingItem != null
+                    ? WeaponTypes.get(blockingItem.getItem())
+                    : null;
+            final double timer = heldWeaponType == WeaponType.BLADE
+                    ? CCConfig.BLADE_BLOCK_TIMER.get()
+                    : CCConfig.SHIELD_BLOCK_TIMER.get();
+            return Mth.ceil(timer * SharedConstants.TICKS_PER_SECOND);
         }
     }
 }
